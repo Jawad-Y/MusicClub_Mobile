@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/usersFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/users"
         android:title="@string/users"/>
 
     <item

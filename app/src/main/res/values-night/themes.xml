@@ -29,8 +29,8 @@
         <!-- TextInput -->
         <item name="textInputStyle">@style/Widget.MusicTeam.TextInput.Dark</item>
 
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="dividerColor">@color/divider_dark</item>
     </style>
 
