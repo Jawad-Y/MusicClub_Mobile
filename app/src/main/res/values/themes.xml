@@ -34,7 +34,7 @@
         <!-- Disable ActionBar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
+        <item name="dividerColor">@color/divider_light</item>
     </style>
 
     <!-- ========================= -->

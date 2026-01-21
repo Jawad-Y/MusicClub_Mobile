@@ -2,60 +2,54 @@
 <resources>
 
     <!-- ========================= -->
-    <!-- Brand Colors -->
+    <!-- Brand (mapped to Tailwind tokens) -->
     <!-- ========================= -->
-    <color name="colorPrimary">#7B3FE4</color>        <!-- Electric Purple -->
-    <color name="colorSecondary">#FF4D8D</color>      <!-- Neon Pink -->
-    <color name="colorAccent">#3EF2FF</color>         <!-- Cyan Blue -->
+    <color name="colorPrimary">#171717</color>        <!-- primary (light) -->
+    <color name="colorSecondary">#F5F5F5</color>      <!-- secondary (light) -->
+    <color name="colorAccent">#009689</color>         <!-- chart-2 -->
 
     <!-- ========================= -->
-    <!-- Dark Mode Backgrounds -->
+    <!-- Backgrounds -->
     <!-- ========================= -->
-    <color name="bg_main_dark">#0E0E12</color>
-    <color name="bg_surface_dark">#1A1A22</color>
-    <color name="bg_elevated_dark">#242430</color>
+    <!-- Use these through theme attributes (see theme mapping below) -->
+    <color name="bg_main_light">#FFFFFF</color>       <!-- background -->
+    <color name="bg_surface_light">#F5F5F5</color>    <!-- secondary -->
+    <color name="bg_elevated_light">#FFFFFF</color>   <!-- card/popover -->
+
+    <color name="bg_main_dark">#0A0A0A</color>        <!-- background (dark) -->
+    <color name="bg_surface_dark">#262626</color>     <!-- secondary (dark) -->
+    <color name="bg_elevated_dark">#171717</color>    <!-- sidebar (dark) -->
 
     <!-- ========================= -->
-    <!-- Light Mode Backgrounds -->
+    <!-- Text -->
     <!-- ========================= -->
-    <color name="bg_main_light">#FFFFFF</color>
-    <color name="bg_surface_light">#F4F4F8</color>
-    <color name="bg_elevated_light">#EAEAF0</color>
+    <color name="text_primary_light">#0A0A0A</color>    <!-- foreground (light) -->
+    <color name="text_secondary_light">#737373</color>  <!-- muted-foreground (light) -->
+    <color name="text_disabled_light">#A1A1A1</color>   <!-- ring (light-ish) -->
 
-    <!-- ========================= -->
-    <!-- Text Colors - Dark Mode -->
-    <!-- ========================= -->
-    <color name="text_primary_dark">#FFFFFF</color>
-    <color name="text_secondary_dark">#B3B3C2</color>
-    <color name="text_disabled_dark">#6F6F7D</color>
-
-    <!-- ========================= -->
-    <!-- Text Colors - Light Mode -->
-    <!-- ========================= -->
-    <color name="text_primary_light">#121212</color>
-    <color name="text_secondary_light">#5F5F6B</color>
-    <color name="text_disabled_light">#9A9AA5</color>
+    <color name="text_primary_dark">#FAFAFA</color>     <!-- foreground (dark) -->
+    <color name="text_secondary_dark">#A1A1A1</color>   <!-- muted-foreground (dark) -->
+    <color name="text_disabled_dark">#525252</color>    <!-- ring (dark) -->
 
     <!-- ========================= -->
     <!-- States -->
     <!-- ========================= -->
-    <color name="state_success">#4CAF50</color>
-    <color name="state_warning">#FFC107</color>
-    <color name="state_error">#FF5252</color>
-    <color name="state_info">#2196F3</color>
+    <color name="state_success">#009689</color>  <!-- chart-2 -->
+    <color name="state_warning">#FFB900</color>  <!-- chart-4 -->
+    <color name="state_error">#E7000B</color>    <!-- destructive -->
+    <color name="state_info">#104E64</color>     <!-- chart-3 -->
 
     <!-- ========================= -->
     <!-- Buttons -->
     <!-- ========================= -->
-    <color name="button_primary">#7B3FE4</color>
-    <color name="button_secondary">#FF4D8D</color>
-    <color name="button_disabled">#3A3A45</color>
-
+    <color name="button_primary">#171717</color>
+    <color name="button_secondary">#F5F5F5</color>
+    <color name="button_disabled">#E5E5E5</color>    <!-- border (light) -->
 
     <!-- ========================= -->
     <!-- Divider & Border -->
     <!-- ========================= -->
-    <color name="divider_dark">#2E2E3A</color>
-    <color name="divider_light">#DADAE2</color>
+    <color name="divider_light">#E5E5E5</color>       <!-- border (light) -->
+    <color name="divider_dark">#262626</color>        <!-- border (dark) -->
 
 </resources>

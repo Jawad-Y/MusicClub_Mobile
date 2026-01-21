@@ -31,7 +31,7 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
+        <item name="dividerColor">@color/divider_dark</item>
     </style>
 
     <!-- ========================= -->
