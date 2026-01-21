@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ========================= -->
+    <!-- Brand Colors -->
+    <!-- ========================= -->
+    <color name="colorPrimary">#7B3FE4</color>        <!-- Electric Purple -->
+    <color name="colorSecondary">#FF4D8D</color>      <!-- Neon Pink -->
+    <color name="colorAccent">#3EF2FF</color>         <!-- Cyan Blue -->
+
+    <!-- ========================= -->
+    <!-- Dark Mode Backgrounds -->
+    <!-- ========================= -->
+    <color name="bg_main_dark">#0E0E12</color>
+    <color name="bg_surface_dark">#1A1A22</color>
+    <color name="bg_elevated_dark">#242430</color>
+
+    <!-- ========================= -->
+    <!-- Light Mode Backgrounds -->
+    <!-- ========================= -->
+    <color name="bg_main_light">#FFFFFF</color>
+    <color name="bg_surface_light">#F4F4F8</color>
+    <color name="bg_elevated_light">#EAEAF0</color>
+
+    <!-- ========================= -->
+    <!-- Text Colors - Dark Mode -->
+    <!-- ========================= -->
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B3B3C2</color>
+    <color name="text_disabled_dark">#6F6F7D</color>
+
+    <!-- ========================= -->
+    <!-- Text Colors - Light Mode -->
+    <!-- ========================= -->
+    <color name="text_primary_light">#121212</color>
+    <color name="text_secondary_light">#5F5F6B</color>
+    <color name="text_disabled_light">#9A9AA5</color>
+
+    <!-- ========================= -->
+    <!-- States -->
+    <!-- ========================= -->
+    <color name="state_success">#4CAF50</color>
+    <color name="state_warning">#FFC107</color>
+    <color name="state_error">#FF5252</color>
+    <color name="state_info">#2196F3</color>
+
+    <!-- ========================= -->
+    <!-- Buttons -->
+    <!-- ========================= -->
+    <color name="button_primary">#7B3FE4</color>
+    <color name="button_secondary">#FF4D8D</color>
+    <color name="button_disabled">#3A3A45</color>
+
+
+    <!-- ========================= -->
+    <!-- Divider & Border -->
+    <!-- ========================= -->
+    <color name="divider_dark">#2E2E3A</color>
+    <color name="divider_light">#DADAE2</color>
+
+</resources>

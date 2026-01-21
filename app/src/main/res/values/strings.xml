@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Music Club</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login_with_your_email_and_password">Login with your email and password</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_email_is_required">Email is required</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="incorrect_email_or_password">Incorrect email or password</string>
+    <string name="training">Training</string>
+    <string name="classes">Classes</string>
+    <string name="class_detail">Class Detail</string>
+    <string name="department">Department</string>
+    <string name="instruments">Instruments</string>
+    <string name="profile">Profile</string>
+    <string name="session">Session</string>
+    <string name="user_detail">User Detail</string>
+    <string name="users">Users</string>
+
+
+</resources>

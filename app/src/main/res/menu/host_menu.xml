@@ -1,0 +1,53 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/usersFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/users"/>
+
+    <item
+        android:id="@+id/userDetailFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/user_detail"/>
+
+    <item
+        android:id="@+id/SessionFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/session"/>
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/profile"/>
+
+    <item
+        android:id="@+id/instrumentsFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/instruments"/>
+
+
+    <!-->
+
+    <item
+        android:id="@+id/departmentFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/department"/>
+
+    <item
+        android:id="@+id/classDetailFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/class_detail"/>
+
+    <item
+        android:id="@+id/classesFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/classes"/>
+
+    <item
+        android:id="@+id/trainingFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/training"/>
+
+        <!-->
+
+</menu>

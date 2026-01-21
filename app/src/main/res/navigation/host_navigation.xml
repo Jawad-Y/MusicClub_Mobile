@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.music.musicclub.UsersFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.music.musicclub.UserDetailFragment"
+        android:label="UserDetail" />
+
+    <fragment
+        android:id="@+id/SessionFragment"
+        android:name="com.music.musicclub.SessionFragment"
+        android:label="Session" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.music.musicclub.ProfileFragment"
+        android:label="Profile" />
+
+    <fragment
+        android:id="@+id/instrumentsFragment"
+        android:name="com.music.musicclub.InstrumentsFragment"
+        android:label="Instruments" />
+
+    <fragment
+        android:id="@+id/departmentFragment"
+        android:name="com.music.musicclub.DepartmentFragment"
+        android:label="Department" />
+
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="com.music.musicclub.ClassDetailFragment"
+        android:label="ClassDetail" />
+
+    <fragment
+        android:id="@+id/classesFragment"
+        android:name="com.music.musicclub.ClassesFragment"
+        android:label="Classes" />
+
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.music.musicclub.TrainingFragment"
+        android:label="Training" />
+
+
+</navigation>

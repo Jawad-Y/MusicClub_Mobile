@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ========================= -->
+    <!-- Main App Theme (Light) -->
+    <!-- ========================= -->
+    <style name="Theme.MusicClub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Brand Colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Backgrounds -->
+        <item name="android:windowBackground">@color/bg_main_light</item>
+        <item name="colorSurface">@color/bg_surface_light</item>
+
+        <!-- Text -->
+        <item name="android:textColorPrimary">@color/text_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_secondary_light</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/bg_main_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Buttons -->
+        <item name="materialButtonStyle">@style/Widget.MusicTeam.Button</item>
+
+        <!-- TextInput -->
+        <item name="textInputStyle">@style/Widget.MusicTeam.TextInput</item>
+
+        <!-- Disable ActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <!-- ========================= -->
+    <!-- Button Style -->
+    <!-- ========================= -->
+    <style name="Widget.MusicTeam.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/button_primary</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <!-- ========================= -->
+    <!-- TextInput Style -->
+    <!-- ========================= -->
+    <style name="Widget.MusicTeam.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/bg_surface_light</item>
+        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="hintTextColor">@color/text_secondary_light</item>
+    </style>
+
+</resources>
