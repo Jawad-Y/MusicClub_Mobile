@@ -27,7 +27,7 @@
         android:layout_marginBottom="24dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
-        android:background="@color/bg_surface_light"
+        android:background="?attr/colorSurface"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 android:text="@string/welcome_back"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary_light"
+                android:textColor="?android:attr/textColorPrimary"
                 android:gravity="center"/>
 
             <!-- Subtitle -->
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_with_your_email_and_password"
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary_light"
+                android:textColor="?android:attr/textColorSecondary"
                 android:gravity="center"
                 android:layout_marginTop="8dp"/>
 
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/divider_light">
+                app:boxStrokeColor="?attr/dividerColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/divider_light"
+                app:boxStrokeColor="?attr/dividerColor"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText

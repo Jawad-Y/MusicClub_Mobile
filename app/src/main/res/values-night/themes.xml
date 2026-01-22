@@ -18,6 +18,8 @@
         <!-- Text -->
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary_dark</item>
+
 
         <!-- Status Bar -->
         <item name="android:statusBarColor">@color/bg_main_dark</item>
@@ -29,9 +31,9 @@
         <!-- TextInput -->
         <item name="textInputStyle">@style/Widget.MusicTeam.TextInput.Dark</item>
 
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="dividerColor">@color/divider_dark</item>
     </style>
 
     <!-- ========================= -->

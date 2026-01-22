@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/usersFragment"
+        android:icon="@drawable/users"
+        android:title="@string/users"/>
+
+    <item
+        android:id="@+id/userDetailFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/user_detail"/>
+
+    <item
+        android:id="@+id/SessionFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/session"/>
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/profile"/>
+
+    <!-- The "More" item -->
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more" />
+
+
+</menu>
