@@ -117,6 +117,14 @@
 
     <string name="action_save_changes">Save Changes</string>
     <string name="more">More</string>
+    <string name="add_class">Add class</string>
 
+    <!-- New strings for item_class layout -->
+    <string name="placeholder_class_title">Class Title</string>
+    <string name="cd_edit_class">Edit class</string>
+    <string name="cd_delete_class">Delete class</string>
+    <string name="placeholder_department">Department</string>
+    <string name="placeholder_members">0 members</string>
+    <string name="placeholder_leader">Leader: -</string>
 
 </resources>
