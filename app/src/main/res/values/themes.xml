@@ -20,6 +20,8 @@
         <!-- Text -->
         <item name="android:textColorPrimary">@color/text_primary_light</item>
         <item name="android:textColorSecondary">@color/text_secondary_light</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary_light</item>
+
 
         <!-- Status Bar -->
         <item name="android:statusBarColor">@color/bg_main_light</item>

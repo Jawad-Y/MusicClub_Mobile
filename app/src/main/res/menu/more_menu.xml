@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These items will be hidden and shown in the Bottom Sheet -->
+    <item
+        android:id="@+id/instrumentsFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/instruments" />
+
+    <item
+        android:id="@+id/departmentFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/department" />
+
+    <item
+        android:id="@+id/classDetailFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/class_detail" />
+
+    <item
+        android:id="@+id/classesFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/classes" />
+
+    <item
+        android:id="@+id/trainingFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/training" />
+</menu>

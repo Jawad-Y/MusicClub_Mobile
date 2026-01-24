@@ -20,4 +20,103 @@
     <string name="users">Users</string>
 
 
+    <string name="department_subtitle">
+    Manage organizational departments and their leaders
+</string>
+
+    <string name="add_department">Add Department</string>
+    <string name="view_classes">View Classes</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- Sample (temporary for UI preview only) -->
+    <string name="sample_department_name">Music Department</string>
+    <string name="sample_department_leader">Leader: John Doe</string>
+
+
+    <string name="instruments_title">Instruments</string>
+    <string name="instruments_subtitle">Manage instrument inventory and assignments</string>
+
+    <string name="add_type">Add Type</string>
+    <string name="assign_instrument">Assign</string>
+    <string name="add_instrument">Add Instrument</string>
+
+    <string name="sample_instrument_name">Violin</string>
+
+    <string name="session_title">Session Title</string>
+    <string name="session_subtitle">Training Session Details</string>
+
+    <string name="session_information">Session Information</string>
+    <string name="session_information_desc">Details about this session</string>
+
+    <string name="label_date">Date:</string>
+    <string name="value_date">Date</string>
+
+    <string name="label_time">Time:</string>
+    <string name="value_time">Time</string>
+
+    <string name="label_trainer">Trainer:</string>
+    <string name="value_trainer">Trainer Name</string>
+
+    <string name="label_location">Location:</string>
+    <string name="value_location">Location</string>
+
+    <string name="label_description">Description:</string>
+    <string name="value_description">Session description</string>
+
+    <string name="attendance_status">Attendance Status:</string>
+    <string name="attendance_total">Total: 0</string>
+    <string name="attendance_present">Present: 0</string>
+    <string name="attendance_absent">Absent: 0</string>
+    <string name="attendance_late">Late: 0</string>
+
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="training_sessions_title">Training Sessions</string>
+    <string name="training_sessions_subtitle">
+        Manage training sessions and track attendance
+    </string>
+
+    <string name="action_add_session">+ Add Session</string>
+
+    <string name="filter_all">All</string>
+    <string name="filter_upcoming">Upcoming</string>
+    <string name="filter_attendance">Attendance</string>
+
+    <string name="welcome_title">Welcome to Music Club Management System</string>
+
+    <string name="welcome_subtitle">
+        Organize, manage, and coordinate all club activities in one place
+    </string>
+
+    <string name="welcome_description">
+        The Music Club Management System is a web-based application designed to manage and organize the
+        activities of a music club. It centralizes users, classes, training sessions, instruments, events,
+        and learning materials into a single platform.
+    </string>
+
+    <string name="welcome_features">
+        The system replaces manual and unstructured management by providing role-based access,
+        organized data storage, and clear workflows for all users.
+    </string>
+
+    <string name="welcome_audience">
+        It is designed for club leaders, trainers, trainees, and managers to improve efficiency,
+        reduce errors, and ensure smooth communication and coordination.
+    </string>
+
+    <string name="action_get_started">Get Started</string>
+    <string name="profile_image">Profile image</string>
+
+    <string name="profile_name">John Doe</string>
+    <string name="profile_role">Role: Trainer</string>
+
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+
+    <string name="action_save_changes">Save Changes</string>
+    <string name="more">More</string>
+
+
 </resources>
