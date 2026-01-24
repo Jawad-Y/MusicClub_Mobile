@@ -4,13 +4,17 @@
     <!-- These items will be hidden and shown in the Bottom Sheet -->
     <item
         android:id="@+id/instrumentsFragment"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/instruments" />
+        android:icon="@drawable/ic_instrument"
+        android:title="@string/instruments"
+        android:iconTint="?attr/colorOnSurface" />
+
 
     <item
         android:id="@+id/departmentFragment"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/department" />
+        android:icon="@drawable/ic_department"
+        android:title="@string/department"
+        android:iconTint="?attr/colorOnSurface" />
+
 
     <item
         android:id="@+id/classDetailFragment"

@@ -1,80 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:layout_margin="30dp"
     android:background="?attr/colorSurface">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tvInstrumentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instruments_title"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="?attr/colorOnSurface"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Subtitle -->
-    <TextView
-        android:id="@+id/tvInstrumentSubtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/instruments_subtitle"
-        android:textSize="14sp"
-        android:textColor="?attr/colorOnSurface"
-        android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@id/tvInstrumentTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Buttons Row -->
+    <!-- Main Content -->
     <LinearLayout
-        android:id="@+id/layoutInstrumentButtons"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tvInstrumentSubtitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="30dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddType"
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvInstrumentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_type" />
+            android:text="@string/instruments_title"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAssignInstrument"
-            android:layout_width="wrap_content"
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/tvInstrumentSubtitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/assign_instrument" />
+            android:text="@string/instruments_subtitle"
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddInstrument"
-            android:layout_width="wrap_content"
+        <!-- Secondary Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_instrument"
-            android:layout_marginStart="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddType"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_type"
+                app:icon="@drawable/ic_category"
+                app:iconGravity="textStart"
+                app:iconTint="?attr/colorOnSurface"
+                android:layout_marginEnd="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAssignInstrument"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/assign_instrument"
+                app:icon="@drawable/ic_assign"
+                app:iconGravity="textStart"
+                app:iconTint="?attr/colorOnSurface"/>
+        </LinearLayout>
+
+        <!-- Instruments List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInstruments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
     </LinearLayout>
 
-    <!-- Instruments List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvInstruments"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutInstrumentButtons"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddInstrument"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_instrument"
+        app:srcCompat="@drawable/ic_add2"
+        app:backgroundTint="?attr/colorPrimary"
+        app:tint="?attr/colorOnPrimary"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

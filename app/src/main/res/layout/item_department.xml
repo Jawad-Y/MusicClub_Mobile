@@ -9,69 +9,80 @@
     app:cardElevation="4dp"
     app:cardBackgroundColor="?attr/colorSurface">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="12dp">
 
         <!-- Department Name -->
         <TextView
             android:id="@+id/tvDepartmentName"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sample_department_name"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="?attr/colorOnSurface" />
 
         <!-- Leader -->
         <TextView
             android:id="@+id/tvDepartmentLeader"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sample_department_leader"
             android:textSize="14sp"
-            android:textColor="?attr/colorOnSurface"
-            android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDepartmentName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:layout_marginTop="4dp" />
 
-        <!-- View Classes Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnViewClasses"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/view_classes"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDepartmentLeader"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="12dp">
 
-        <!-- Edit Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEditDepartment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDepartmentLeader"
-            app:layout_constraintStart_toEndOf="@id/btnViewClasses"
-            android:layout_marginStart="8dp" />
+            <!-- View -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewClasses"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:icon="@drawable/ic_visibility"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/view_classes"/>
 
-        <!-- Delete Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDeleteDepartment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDepartmentLeader"
-            app:layout_constraintStart_toEndOf="@id/btnEditDepartment"
-            android:layout_marginStart="8dp" />
+            <!-- Edit -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditDepartment"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/edit"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Delete -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteDepartment"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:iconTint="?attr/colorError"
+                android:contentDescription="@string/delete"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
