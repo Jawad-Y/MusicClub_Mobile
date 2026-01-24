@@ -40,7 +40,7 @@
             android:layout_height="27dp"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_edit"
+            android:src="@drawable/ic_edit"
             android:contentDescription="@string/cd_edit_class"
             app:tint="?attr/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,10 +54,10 @@
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_delete_class"
-            android:src="@android:drawable/ic_menu_delete"
+            android:src="@drawable/ic_delete"
+            app:tint="?attr/colorPrimary"
             app:layout_constraintEnd_toStartOf="@id/btnEdit"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?android:attr/textColorSecondary" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <!-- Department chip -->
         <com.google.android.material.chip.Chip

@@ -1,49 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
-    android:padding="12dp">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurface">
 
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        tool:text="name"
-        android:textAppearance="?attr/textAppearanceBody1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_status"
-        android:layout_marginStart="0dp" />
+        android:padding="12dp">
 
-    <TextView
-        android:id="@+id/item_subtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        tool:text="role"
-        android:textAppearance="?attr/textAppearanceCaption"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintStart_toStartOf="@id/item_name"
-        app:layout_constraintTop_toBottomOf="@id/item_name"
-        app:layout_constraintEnd_toStartOf="@id/item_status" />
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            tool:text="name"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user_status"
+            android:layout_marginStart="0dp" />
 
-    <TextView
-        android:id="@+id/item_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        tool:text="Active"
-        android:textAppearance="?attr/textAppearanceCaption"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_name"
-        android:layout_marginStart="8dp" />
+        <TextView
+            android:id="@+id/user_role"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            tool:text="role"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="@id/user_name"
+            app:layout_constraintTop_toBottomOf="@id/user_name"
+            app:layout_constraintEnd_toStartOf="@id/user_status" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/user_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            tool:text="Active"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/user_name"
+            android:layout_marginStart="8dp" />
+
+        <!-- Buttons Row anchored to the end, below subtitle -->
+        <LinearLayout
+            android:id="@+id/user_buttons_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/user_role"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Edit -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditUser"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/edit" />
+
+            <!-- Delete -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteUser"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:iconTint="?attr/colorSecondary"
+                android:contentDescription="@string/delete" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -8,17 +8,17 @@
 
     <item
         android:id="@+id/userDetailFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/users"
         android:title="@string/user_detail"/>
 
     <item
         android:id="@+id/SessionFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_session"
         android:title="@string/session"/>
 
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
 
     <!-- The "More" item -->

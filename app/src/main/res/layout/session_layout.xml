@@ -225,6 +225,7 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/action_edit"
+                android:textColor="?attr/colorSecondary"
                 android:layout_margin="8dp"/>
 
             <com.google.android.material.button.MaterialButton
@@ -235,6 +236,7 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/action_delete"
+                android:textColor="?attr/colorSecondary"
                 android:layout_margin="8dp"
                 app:backgroundTint="?attr/colorError"/>
         </LinearLayout>

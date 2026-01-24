@@ -126,5 +126,6 @@
     <string name="placeholder_department">Department</string>
     <string name="placeholder_members">0 members</string>
     <string name="placeholder_leader">Leader: -</string>
+    <string name="add_user">Add User:</string>
 
 </resources>
