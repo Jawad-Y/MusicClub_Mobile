@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
+    android:padding="35dp"
     android:background="?attr/colorSurface">
 
     <LinearLayout
@@ -17,6 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/session_title"
+            android:textSize="30sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textColor="?attr/colorOnSurface"
             android:layout_marginBottom="6dp"/>
@@ -26,6 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/session_subtitle"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="40dp"/>
@@ -35,6 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/session_information"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -43,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/session_information_desc"
+            android:textSize="13sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="25dp"/>
@@ -52,6 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_date"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -61,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_date"
+            android:textSize="13sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="10dp"/>
@@ -70,6 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_time"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -79,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_time"
+            android:textSize="13sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="10dp"/>
@@ -88,6 +101,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_trainer"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -97,6 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value_trainer"
+            android:textSize="13sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="10dp"/>
@@ -106,6 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_location"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -114,6 +132,7 @@
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="13sp"
             android:text="@string/value_location"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
@@ -124,6 +143,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_description"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -133,6 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/value_description"
+            android:textSize="13sp"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="16dp"/>
@@ -142,6 +164,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/attendance_status"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="4dp"/>
@@ -151,6 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/attendance_total"
+            android:textSize="14sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:layout_marginBottom="16dp"/>
@@ -160,6 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/attendance_present"
+            android:textSize="14sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorPrimary"
             android:layout_marginBottom="2dp"/>
@@ -169,6 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/attendance_absent"
+            android:textSize="14sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorError"
             android:layout_marginBottom="2dp"/>
@@ -178,8 +205,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/attendance_late"
+            android:textSize="14sp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="@color/state_warning"
             android:layout_marginBottom="16dp"/>
 
         <!-- Actions -->
@@ -210,6 +238,5 @@
                 android:layout_margin="8dp"
                 app:backgroundTint="?attr/colorError"/>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

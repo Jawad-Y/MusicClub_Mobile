@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="17dp"
+    android:padding="35dp"
     android:background="?attr/colorSurface">
 
     <!-- Title -->
@@ -12,6 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/training_sessions_title"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:textAppearance="?attr/textAppearanceHeadlineLarge"
         android:textColor="?attr/colorOnSurface"/>
 
@@ -21,13 +23,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="14dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/training_sessions_subtitle"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurfaceVariant"/>
 
@@ -37,12 +41,12 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:text="@string/action_add_session"
-            android:textSize="13sp"
+            android:textSize="11sp"
             android:minHeight="0dp"
             android:insetTop="0dp"
+            android:layout_margin="10dp"
             android:insetBottom="0dp"
-            android:paddingHorizontal="8dp"
-            android:layout_margin="3dp"/>
+            android:paddingHorizontal="8dp"/>
     </LinearLayout>
 
     <!-- Filters -->
@@ -60,6 +64,7 @@
             android:text="@string/filter_all"
             android:textSize="13sp"
             android:minHeight="0dp"
+            android:padding="3dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:layout_margin="5dp"/>
@@ -73,6 +78,7 @@
             android:textSize="13sp"
             android:minHeight="0dp"
             android:insetTop="0dp"
+            android:padding="3dp"
             android:insetBottom="0dp"
             android:layout_margin="5dp"/>
 
@@ -82,9 +88,10 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:text="@string/filter_attendance"
-            android:textSize="13sp"
+            android:textSize="11sp"
             android:minHeight="0dp"
             android:insetTop="0dp"
+            android:padding="12dp"
             android:insetBottom="0dp"
             android:layout_margin="5dp"/>
     </LinearLayout>
@@ -95,5 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
 </LinearLayout>
