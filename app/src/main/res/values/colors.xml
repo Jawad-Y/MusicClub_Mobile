@@ -2,54 +2,79 @@
 <resources>
 
     <!-- ========================= -->
-    <!-- Brand (mapped to Tailwind tokens) -->
+    <!-- Brand Colors (Day/Light Mode) - Minimal Neutral -->
     <!-- ========================= -->
-    <color name="colorPrimary">#171717</color>        <!-- primary (light) -->
-    <color name="colorSecondary">#F5F5F5</color>      <!-- secondary (light) -->
-    <color name="colorAccent">#009689</color>         <!-- chart-2 -->
+    <color name="colorPrimary">#0A0A0A</color>        <!-- Near Black -->
+    <color name="colorSecondary">#F5F5F5</color>      <!-- Light Gray Surface -->
+    <color name="colorAccent">#737373</color>         <!-- Subtle Gray Accent -->
 
     <!-- ========================= -->
-    <!-- Backgrounds -->
+    <!-- Backgrounds (Day/Light Mode) - Clean White -->
     <!-- ========================= -->
-    <!-- Use these through theme attributes (see theme mapping below) -->
-    <color name="bg_main_light">#FFFFFF</color>       <!-- background -->
-    <color name="bg_surface_light">#F5F5F5</color>    <!-- secondary -->
-    <color name="bg_elevated_light">#FFFFFF</color>   <!-- card/popover -->
-
-    <color name="bg_main_dark">#0A0A0A</color>        <!-- background (dark) -->
-    <color name="bg_surface_dark">#262626</color>     <!-- secondary (dark) -->
-    <color name="bg_elevated_dark">#171717</color>    <!-- sidebar (dark) -->
+    <color name="bg_main_light">#FFFFFF</color>       <!-- Pure White -->
+    <color name="bg_surface_light">#FFFFFF</color>    <!-- Pure White -->
+    <color name="bg_elevated_light">#FFFFFF</color>   <!-- Pure White (Cards) -->
 
     <!-- ========================= -->
-    <!-- Text -->
+    <!-- Text (Day/Light Mode) - High Contrast -->
     <!-- ========================= -->
-    <color name="text_primary_light">#0A0A0A</color>    <!-- foreground (light) -->
-    <color name="text_secondary_light">#737373</color>  <!-- muted-foreground (light) -->
-    <color name="text_disabled_light">#A1A1A1</color>   <!-- ring (light-ish) -->
-
-    <color name="text_primary_dark">#FAFAFA</color>     <!-- foreground (dark) -->
-    <color name="text_secondary_dark">#A1A1A1</color>   <!-- muted-foreground (dark) -->
-    <color name="text_disabled_dark">#525252</color>    <!-- ring (dark) -->
+    <color name="text_primary_light">#0A0A0A</color>    <!-- Near Black -->
+    <color name="text_secondary_light">#737373</color>  <!-- Subtle Gray -->
+    <color name="text_disabled_light">#A3A3A3</color>   <!-- Light Gray -->
 
     <!-- ========================= -->
-    <!-- States -->
+    <!-- States (Day/Light Mode) - Reserved for Status -->
     <!-- ========================= -->
-    <color name="state_success">#009689</color>  <!-- chart-2 -->
-    <color name="state_warning">#FFB900</color>  <!-- chart-4 -->
-    <color name="state_error">#E7000B</color>    <!-- destructive -->
-    <color name="state_info">#104E64</color>     <!-- chart-3 -->
+    <color name="state_success">#16A34A</color>  <!-- Green (optional) -->
+    <color name="state_warning">#EA580C</color>  <!-- Orange (optional) -->
+    <color name="state_error">#DC2626</color>    <!-- Red (destructive) -->
+    <color name="state_info">#2563EB</color>     <!-- Blue (chart accent) -->
 
     <!-- ========================= -->
-    <!-- Buttons -->
+    <!-- Buttons (Day/Light Mode) -->
     <!-- ========================= -->
-    <color name="button_primary">#171717</color>
+    <color name="button_primary">#0A0A0A</color>
     <color name="button_secondary">#F5F5F5</color>
-    <color name="button_disabled">#E5E5E5</color>    <!-- border (light) -->
+    <color name="button_disabled">#E5E5E5</color>
 
     <!-- ========================= -->
-    <!-- Divider & Border -->
+    <!-- Divider & Border (Day/Light Mode) - Light Gray -->
     <!-- ========================= -->
-    <color name="divider_light">#E5E5E5</color>       <!-- border (light) -->
-    <color name="divider_dark">#262626</color>        <!-- border (dark) -->
+    <color name="divider_light">#E5E5E5</color>       <!-- Light Gray Border -->
+
+    <!-- ========================= -->
+    <!-- Additional Colors (Day/Light Mode) -->
+    <!-- ========================= -->
+    <color name="overlay_light">#80000000</color>     <!-- Semi-transparent Black -->
+    <color name="card_light">#FFFFFF</color>          <!-- Card Background -->
+    <color name="input_background_light">#FAFAFA</color>  <!-- Very Subtle Gray -->
+    <color name="ripple_light">#1A000000</color>      <!-- Subtle Ripple -->
+
+    <!-- ========================= -->
+    <!-- Backgrounds (Night/Dark Mode - Base Declarations) -->
+    <!-- ========================= -->
+    <color name="bg_main_dark">#0A0A0A</color>        <!-- Near Black -->
+    <color name="bg_surface_dark">#1A1A1A</color>     <!-- Dark Gray Surface -->
+    <color name="bg_elevated_dark">#1A1A1A</color>    <!-- Dark Gray (Cards) -->
+
+    <!-- ========================= -->
+    <!-- Text (Night/Dark Mode - Base Declarations) -->
+    <!-- ========================= -->
+    <color name="text_primary_dark">#FAFAFA</color>     <!-- Near White -->
+    <color name="text_secondary_dark">#A3A3A3</color>   <!-- Muted Gray -->
+    <color name="text_disabled_dark">#737373</color>    <!-- Darker Gray -->
+
+    <!-- ========================= -->
+    <!-- Divider & Border (Night/Dark Mode - Base Declarations) -->
+    <!-- ========================= -->
+    <color name="divider_dark">#262626</color>        <!-- Dark Gray Border -->
+
+    <!-- ========================= -->
+    <!-- Additional Colors (Night/Dark Mode - Base Declarations) -->
+    <!-- ========================= -->
+    <color name="overlay_dark">#80000000</color>      <!-- Semi-transparent Black -->
+    <color name="card_dark">#1A1A1A</color>           <!-- Card Background -->
+    <color name="input_background_dark">#171717</color>  <!-- Subtle Darker -->
+    <color name="ripple_dark">#33FFFFFF</color>       <!-- Subtle White Ripple -->
 
 </resources>

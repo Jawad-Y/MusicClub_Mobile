@@ -116,7 +116,7 @@
                 android:layout_height="48dp"
                 android:text="@string/login"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="?android:attr/windowBackground"
                 android:backgroundTint="@color/button_primary"/>
 
         </LinearLayout>
