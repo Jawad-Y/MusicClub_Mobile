@@ -1,0 +1,47 @@
+ApiService.login(
+    this,
+    "test@email.com",
+    "123456",
+    response -> {
+        String token = response.optString("token");
+        //  SharedPreferences
+    },
+    error -> {
+        // handle error
+    }
+);
+
+///////////////////////////////////////////////////////////////////
+
+ApiService api = new ApiService(this, token);
+
+api.me(
+    response -> {
+        // user data
+    },
+    error -> {}
+);
+
+
+//////////////////Users – GET///////////////////
+
+api.get(
+    ApiConfig.USERS,
+    response -> {},
+    error -> {}
+);
+
+/////////////////Create Department/////////////////////////////////
+
+JSONObject body = new JSONObject();
+body.put("name", "IT");
+
+api.post(
+    ApiConfig.DEPARTMENTS,
+    body,
+    response -> {},
+    error -> {}
+);
+
+
+
