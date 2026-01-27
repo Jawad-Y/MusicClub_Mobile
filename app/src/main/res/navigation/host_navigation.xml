@@ -29,10 +29,16 @@
         android:name="com.music.musicclub.InstrumentsFragment"
         android:label="Instruments" />
 
+    <!-- Department fragment with action -->
     <fragment
         android:id="@+id/departmentFragment"
         android:name="com.music.musicclub.DepartmentFragment"
-        android:label="Department" />
+        android:label="Department">
+
+        <action
+            android:id="@+id/action_department_to_addEditDepartment"
+            app:destination="@id/addEditDepartmentFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/classDetailFragment"
@@ -42,12 +48,25 @@
     <fragment
         android:id="@+id/classesFragment"
         android:name="com.music.musicclub.ClassesFragment"
-        android:label="Classes" />
+        android:label="Classes">
+        <argument
+            android:name="department_id"
+            app:argType="integer"/>
+    </fragment>
 
     <fragment
         android:id="@+id/trainingFragment"
         android:name="com.music.musicclub.TrainingFragment"
         android:label="Training" />
 
+    <fragment
+        android:id="@+id/addEditDepartmentFragment"
+        android:name="com.music.musicclub.AddEditDepartmentFragment"
+        android:label="Add/Edit Department">
+        <argument
+            android:name="department_id"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </fragment>
 
 </navigation>

@@ -10,6 +10,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+
 
 import org.json.JSONObject;
 
@@ -92,6 +94,37 @@ public class ApiService {
                        Response.ErrorListener errorListener) {
         request(Request.Method.DELETE, url, null, listener, errorListener);
     }
+    public void deleteString(String url,
+                             Response.Listener<String> listener,
+                             Response.ErrorListener errorListener) {
+
+        StringRequest request = new StringRequest(
+                Request.Method.DELETE,
+                url,
+                listener,
+                errorListener
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+
+                if (!TextUtils.isEmpty(token)) {
+                    headers.put("Authorization", "Bearer " + token);
+                }
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                15000,
+                1,
+                1.0f
+        ));
+
+        VolleySingleton.getInstance(appContext).add(request);
+    }
+
 
     private void request(int method,
                          String url,
