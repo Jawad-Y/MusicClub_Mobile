@@ -45,6 +45,10 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
 
         FloatingActionButton fab = view.findViewById(R.id.fabAddInstrument);
         fab.setOnClickListener(v -> showAddDialog());
+
+        view.findViewById(R.id.btnAddType).setOnClickListener(v -> showAddTypeDialog());
+
+
     }
 
     private void loadInstruments() {
@@ -265,5 +269,63 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
                 });
     }
+
+    private void showAddTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Add Instrument Type");
+
+        View dialogView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_add_instrument_type, null);
+
+        EditText etTypeName = dialogView.findViewById(R.id.etTypeName);
+
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialogView.findViewById(R.id.btnCreate).setOnClickListener(v -> {
+            String typeName = etTypeName.getText().toString().trim();
+
+            if (typeName.isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter type name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            createInstrumentType(typeName, dialog);
+        });
+
+        dialog.show();
+    }
+
+    private void createInstrumentType(String name, AlertDialog dialog) {
+        ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("name", name);
+        } catch (Exception ignored) {}
+
+        api.post(ApiConfig.INSTRUMENT_TYPES, body, response -> {
+            Toast.makeText(requireContext(),
+                    "Instrument type created",
+                    Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        }, error -> {
+            String msg = "Failed to create instrument type";
+
+            if (error.networkResponse != null) {
+                msg += " (code " + error.networkResponse.statusCode + ")";
+                try {
+                    msg += "\n" + new String(error.networkResponse.data);
+                } catch (Exception ignored) {}
+            }
+
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+        });
+    }
+
+
 
 }
