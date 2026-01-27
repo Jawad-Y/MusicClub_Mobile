@@ -1,9 +1,13 @@
 package com.music.musicclub;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +22,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class InstrumentsFragment extends Fragment implements InstrumentAdapter.OnInstrumentActionListener {
 
     private RecyclerView recyclerView;
     private InstrumentAdapter adapter;
     private ArrayList<Instrument> instruments;
+
+    // **ADD THESE**
+    private ArrayList<InstrumentItem> instrumentItems = new ArrayList<>();
+    private ArrayList<UserItem> userItems = new ArrayList<>();
 
     public InstrumentsFragment() {
         super(R.layout.instruments_layout);
@@ -42,13 +53,13 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
         recyclerView.setAdapter(adapter);
 
         loadInstruments();
+        loadUsers(); // **important**
 
         FloatingActionButton fab = view.findViewById(R.id.fabAddInstrument);
         fab.setOnClickListener(v -> showAddDialog());
 
         view.findViewById(R.id.btnAddType).setOnClickListener(v -> showAddTypeDialog());
-
-
+        view.findViewById(R.id.btnAssignInstrument).setOnClickListener(v -> showAssignDialog());
     }
 
     private void loadInstruments() {
@@ -62,6 +73,7 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
                 JSONArray data = response.getJSONArray("data");
 
                 instruments.clear();
+                instrumentItems.clear();
 
                 for (int i = 0; i < data.length(); i++) {
                     JSONObject obj = data.getJSONObject(i);
@@ -72,6 +84,7 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
                     int typeId = obj.getInt("instrument_type_id");
 
                     instruments.add(new Instrument(id, name, uniqueCode, typeId));
+                    instrumentItems.add(new InstrumentItem(id, name));
                 }
 
                 adapter.notifyDataSetChanged();
@@ -88,6 +101,40 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
                     Toast.LENGTH_SHORT).show();
         });
     }
+
+    private void loadUsers() {
+        ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
+
+        api.get(ApiConfig.USERS, response -> {
+            try {
+                JSONArray data = response.getJSONArray("data");
+
+                userItems.clear();
+
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject obj = data.getJSONObject(i);
+
+                    int id = obj.getInt("id");
+
+                    // ✅ هنا نغير الاسم ل full_name لأن API بتعطيه هيك
+                    String name = obj.optString("full_name", obj.optString("name", "Unknown"));
+
+                    userItems.add(new UserItem(id, name));
+                }
+
+            } catch (Exception e) {
+                Toast.makeText(requireContext(),
+                        "Parsing error (users)",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        }, error -> {
+            Toast.makeText(requireContext(),
+                    "Failed to load users",
+                    Toast.LENGTH_SHORT).show();
+        });
+    }
+
 
     // ===== Add Dialog =====
     private void showAddDialog() {
@@ -326,6 +373,81 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
         });
     }
 
+    // ===== Assign Dialog =====
+    private void showAssignDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Assign Instrument");
 
+        View dialogView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_assign_instrument, null);
+
+        Spinner spInstrument = dialogView.findViewById(R.id.spInstrument);
+        Spinner spUser = dialogView.findViewById(R.id.spUser);
+        Button btnAssign = dialogView.findViewById(R.id.btnAssignInstrumentDialog);
+
+        // spinner adapters
+        ArrayAdapter<InstrumentItem> instrumentAdapter =
+                new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, instrumentItems);
+        instrumentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spInstrument.setAdapter(instrumentAdapter);
+
+        ArrayAdapter<UserItem> userAdapter =
+                new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, userItems);
+        userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spUser.setAdapter(userAdapter);
+
+        userAdapter.notifyDataSetChanged();
+
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        btnAssign.setOnClickListener(v -> {
+            InstrumentItem selectedInstrument = (InstrumentItem) spInstrument.getSelectedItem();
+            UserItem selectedUser = (UserItem) spUser.getSelectedItem();
+
+            if (selectedInstrument == null || selectedUser == null) {
+                Toast.makeText(requireContext(), "Please select instrument and user", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            assignInstrument(selectedInstrument.getId(), selectedUser.getId(), dialog);
+
+        });
+
+        dialog.show();
+    }
+
+    private void assignInstrument(int instrumentId, int userId, AlertDialog dialog) {
+        ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("instrument_id", instrumentId);
+            body.put("user_id", userId);
+
+            // ✅ Add assigned_at (required by backend)
+            body.put("assigned_at", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    .format(new Date()));
+
+        } catch (Exception ignored) {}
+
+        api.post(ApiConfig.ASSIGN_INSTRUMENT, body, response -> {
+            Toast.makeText(requireContext(),
+                    "Instrument assigned successfully",
+                    Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        }, error -> {
+            String msg = "Failed to assign instrument";
+            if (error.networkResponse != null) {
+                msg += " (code " + error.networkResponse.statusCode + ")";
+                try {
+                    msg += "\n" + new String(error.networkResponse.data);
+                } catch (Exception ignored) {}
+            }
+            Log.e("ASSIGN_ERROR", new String(error.networkResponse.data));
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+        });
+    }
 
 }

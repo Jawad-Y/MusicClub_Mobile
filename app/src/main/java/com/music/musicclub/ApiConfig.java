@@ -13,6 +13,8 @@ public class ApiConfig {
     public static final String DEPARTMENTS = BASE_URL + "departments";
     public static final String INSTRUMENTS = BASE_URL + "instruments";
     public static final String INSTRUMENT_TYPES = BASE_URL + "instrument-types";
+    public static final String ASSIGN_INSTRUMENT = BASE_URL + "instrument-assignments";
+
 
 
     public static final String MY_CLASSES = BASE_URL + "myclasses";
