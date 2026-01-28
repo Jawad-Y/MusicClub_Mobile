@@ -1,6 +1,5 @@
 package com.music.musicclub;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
- public class TrainingSessionAdapter extends RecyclerView.Adapter<TrainingSessionAdapter.VH> {
+public class TrainingSessionAdapter extends RecyclerView.Adapter<TrainingSessionAdapter.VH> {
 
     private final List<TrainingSession> items = new ArrayList<>();
     private OnItemActionListener listener;
@@ -78,13 +77,7 @@ import java.util.Locale;
         holder.date.setText(formattedDate + (timeRange.isEmpty() ? "" : " • " + timeRange));
         holder.trainer.setText("");
 
-        // Highlight new session
-        if (position == highlightPosition) {
-            holder.itemView.setBackgroundColor(Color.YELLOW);
-        } else {
-            holder.itemView.setBackgroundColor(Color.WHITE);
-        }
-
+        // --- ITEM CLICK ---
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClicked(s);
         });
