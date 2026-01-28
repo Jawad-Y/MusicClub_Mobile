@@ -54,7 +54,6 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
 
             NavHostFragment.findNavController(fragment)
                     .navigate(R.id.action_department_to_addEditDepartment, bundle);
-
         });
 
         // DELETE
@@ -68,7 +67,7 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
                     .show();
         });
 
-        // VIEW
+        // VIEW CLASSES (added)
         holder.btnView.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("department_id", dept.getId());
@@ -96,7 +95,6 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Vi
                     Toast.makeText(context, "Failed to delete department", Toast.LENGTH_SHORT).show();
                 });
     }
-
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 

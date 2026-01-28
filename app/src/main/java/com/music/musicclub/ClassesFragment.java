@@ -35,12 +35,9 @@ public class ClassesFragment extends Fragment {
     private ClassesAdapter adapter;
     private ArrayList<MyClass> classes;
 
-    // optional filter when navigating from Department -> Classes
     private int filterDepartmentId = -1;
 
-    public ClassesFragment() {
-        super();
-    }
+    public ClassesFragment() { super(); }
 
     @Nullable
     @Override
@@ -52,7 +49,6 @@ public class ClassesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // read optional argument
         if (getArguments() != null) {
             filterDepartmentId = getArguments().getInt("department_id", -1);
         }
@@ -67,28 +63,12 @@ public class ClassesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         fabAddClass.setOnClickListener(v -> {
-            // Open a small dialog to create a new class (name + leader)
             CreateClassDialog.show(requireContext(), (className, leaderId) -> {
                 LoginManager lm = new LoginManager(requireContext());
                 ApiService api = new ApiService(requireContext(), lm.getToken());
-                org.json.JSONObject body = new org.json.JSONObject();
-                try { body.put("class_name", className); if (leaderId > 0) body.put("class_leader_id", leaderId); }
-                catch (Exception ignored) {}
-                api.post(ApiConfig.MY_CLASSES, body, resp -> {
-                    // try to extract created id
-                    int id = resp.optInt("id", -1);
-                    if (id == -1) {
-                        JSONObject data = resp.optJSONObject("data");
-                        if (data != null) id = data.optInt("id", -1);
-                    }
-                    if (id != -1) {
-                        Bundle bundle = new Bundle(); bundle.putInt("class_id", id);
-                        NavHostFragment.findNavController(this).navigate(R.id.classDetailFragment, bundle);
-                    } else {
-                        // fallback: just refresh
-                        loadClasses();
-                    }
-                }, error -> Toast.makeText(requireContext(), "Failed to create class", Toast.LENGTH_SHORT).show());
+                JSONObject body = new JSONObject();
+                try { body.put("class_name", className); if (leaderId > 0) body.put("class_leader_id", leaderId); } catch (Exception ignored) {}
+                api.post(ApiConfig.MY_CLASSES, body, resp -> loadClasses(), error -> Toast.makeText(requireContext(), "Failed to create class", Toast.LENGTH_SHORT).show());
             });
         });
 
