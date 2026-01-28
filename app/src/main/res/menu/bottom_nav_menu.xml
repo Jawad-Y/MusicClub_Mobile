@@ -7,19 +7,19 @@
         android:title="@string/users"/>
 
     <item
-        android:id="@+id/userDetailFragment"
-        android:icon="@drawable/users"
-        android:title="@string/user_detail"/>
-
-    <item
-        android:id="@+id/SessionFragment"
+        android:id="@+id/trainingFragment"
         android:icon="@drawable/ic_session"
-        android:title="@string/session"/>
+        android:title="@string/training" />
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
+
+    <item
+        android:id="@+id/classesFragment"
+        android:icon="@drawable/ic_class"
+        android:title="@string/classes" />
 
     <!-- The "More" item -->
     <item

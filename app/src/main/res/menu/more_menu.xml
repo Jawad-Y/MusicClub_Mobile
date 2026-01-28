@@ -16,18 +16,6 @@
         android:iconTint="?attr/colorOnSurface" />
 
 
-    <item
-        android:id="@+id/classDetailFragment"
-        android:icon="@drawable/ic_class"
-        android:title="@string/class_detail" />
 
-    <item
-        android:id="@+id/classesFragment"
-        android:icon="@drawable/ic_class"
-        android:title="@string/classes" />
 
-    <item
-        android:id="@+id/trainingFragment"
-        android:icon="@drawable/ic_session"
-        android:title="@string/training" />
 </menu>
