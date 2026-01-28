@@ -2,12 +2,17 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/profileFragment">
+    app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.music.musicclub.UsersFragment"
         android:label="Home" />
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.music.musicclub.DashboardFragment"
+        android:label="Dashboard" />
 
     <fragment
         android:id="@+id/userDetailFragment"
