@@ -51,54 +51,78 @@
     </LinearLayout>
 
     <!-- Filters -->
+    <!-- Filters (Text tabs with underline) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="35dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAllSessions"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="@string/filter_all"
-            android:textColor="?attr/colorSecondary"
-            android:textSize="13sp"
-            android:minHeight="0dp"
-            android:padding="3dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:layout_margin="5dp"/>
+        <!-- Tabs -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnUpcomingSessions"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="@string/filter_upcoming"
-            android:textColor="?attr/colorSecondary"
-            android:textSize="13sp"
-            android:minHeight="0dp"
-            android:insetTop="0dp"
-            android:padding="3dp"
-            android:insetBottom="0dp"
-            android:layout_margin="5dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAllSessions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/filter_all"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingVertical="6dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAttendance"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="@string/filter_attendance"
-            android:textColor="?attr/colorSecondary"
-            android:textSize="11sp"
-            android:minHeight="0dp"
-            android:insetTop="0dp"
-            android:padding="12dp"
-            android:insetBottom="0dp"
-            android:layout_margin="5dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpcomingSessions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/filter_upcoming"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingVertical="6dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
+
+        <!-- Underline -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/lineAll"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"/>
+
+            <View
+                android:id="@+id/lineUpcoming"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"/>
 
     <!-- Sessions list -->
     <androidx.recyclerview.widget.RecyclerView
