@@ -36,7 +36,6 @@ import java.util.Locale;
         notifyDataSetChanged();
     }
 
-    // Highlight last item
     public void highlightLastItem() {
         highlightPosition = items.size() - 1;
         notifyItemChanged(highlightPosition);

@@ -125,7 +125,7 @@ public class TrainingFragment extends Fragment {
         loadSessions();
     }
 
-    // --- Filter upcoming sessions ---
+    // --- Filter upcoming sessions --
     private void filterUpcomingSessions() {
         List<TrainingSession> upcoming = new ArrayList<>();
         SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

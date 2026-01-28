@@ -50,8 +50,8 @@
             android:paddingHorizontal="8dp"/>
     </LinearLayout>
 
-    <!-- Filters -->
-    <!-- Filters (Text tabs with underline) -->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

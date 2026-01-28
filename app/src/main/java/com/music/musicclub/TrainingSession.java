@@ -113,7 +113,6 @@ public class TrainingSession {
                 attendanceTotal, attendancePresent, attendanceAbsent, attendanceLate);
     }
 
-    // --- toJson helper ---
     public JSONObject toJson() {
         JSONObject obj = new JSONObject();
         try {

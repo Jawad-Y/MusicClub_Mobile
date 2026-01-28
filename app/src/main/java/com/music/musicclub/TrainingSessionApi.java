@@ -38,7 +38,7 @@ public class TrainingSessionApi {
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
-
+//
             String json = sb.toString();
             JSONArray arr = null;
             json = (json == null) ? "" : json.trim();

@@ -247,7 +247,7 @@ public class SessionFragment extends Fragment {
         }
     }
 
-    // --- Delete dialog ---
+    // -- Delete dialog --
     private void showDeleteDialog() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Delete Session")
