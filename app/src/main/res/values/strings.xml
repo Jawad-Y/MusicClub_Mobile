@@ -114,8 +114,14 @@
 
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
+    <string name="label_username">Full Name</string>
+    <string name="label_confirm_password">Confirm Password</string>
 
     <string name="action_save_changes">Save Changes</string>
+    <string name="action_logout">Logout</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_total_users">Total Users</string>
+    <string name="dashboard_sessions">Training Sessions</string>
     <string name="more">More</string>
     <string name="add_class">Add class</string>
 

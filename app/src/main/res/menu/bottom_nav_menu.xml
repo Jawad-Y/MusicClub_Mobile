@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/usersFragment"
-        android:icon="@drawable/users"
-        android:title="@string/users"/>
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/dashboard"/>
 
     <item
-        android:id="@+id/userDetailFragment"
-        android:icon="@drawable/users"
-        android:title="@string/user_detail"/>
-
-    <item
-        android:id="@+id/SessionFragment"
+        android:id="@+id/trainingFragment"
         android:icon="@drawable/ic_session"
-        android:title="@string/session"/>
+        android:title="@string/training" />
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"/>
+
+    <item
+        android:id="@+id/classesFragment"
+        android:icon="@drawable/ic_class"
+        android:title="@string/classes" />
 
     <!-- The "More" item -->
     <item
