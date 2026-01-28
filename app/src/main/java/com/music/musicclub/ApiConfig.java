@@ -1,7 +1,7 @@
 package com.music.musicclub;
 public class ApiConfig {
 
-    public static final String BASE_URL = "http://192.168.1.12:8000/api/";
+    public static final String BASE_URL = "http://192.168.0.106:8000/api/";
 
     // Auth
     public static final String LOGIN = BASE_URL + "login";
@@ -10,6 +10,7 @@ public class ApiConfig {
 
     // Examples resources
     public static final String USERS = BASE_URL + "users";
+    public static final String INSTRUMENTS = BASE_URL + "instruments";
     public static final String DEPARTMENTS = BASE_URL + "departments";
     public static final String INSTRUMENTS = BASE_URL + "instruments";
     public static final String INSTRUMENT_TYPES = BASE_URL + "instrument-types";
