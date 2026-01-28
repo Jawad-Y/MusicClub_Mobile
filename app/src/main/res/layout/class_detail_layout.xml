@@ -18,6 +18,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Edit button -->
+    <ImageButton
+        android:id="@+id/btn_edit_class"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Edit"
+        android:src="@android:drawable/ic_menu_edit"
+        android:tint="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- Header: Title + Instructor + meta fields (image removed) -->
     <TextView
         android:id="@+id/title"
@@ -119,13 +132,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/additional_fields" />
 
+    <!-- thin divider following header (uses theme dividerColor) -->
+    <View
+        android:id="@+id/header_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/dividerColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/additional_fields" />
+
     <!-- Tabs: Training Session, Info, Members -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/equipment"
         app:tabIndicatorFullWidth="false"
@@ -150,7 +176,6 @@
             android:text="Members" />
     </com.google.android.material.tabs.TabLayout>
 
-    <!-- Tab contents: three containers; toggle visibility in code -->
     <FrameLayout
         android:id="@+id/tab_content_container"
         android:layout_width="0dp"
@@ -169,12 +194,27 @@
             android:visibility="gone"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Training Sessions"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Training Sessions"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/add_training_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="?attr/colorSecondary"
+                    android:text="Add Session" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/training_sessions_list"
@@ -217,24 +257,53 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     tools:text="A fun, energetic class focusing on rhythm and technique. All levels welcome. Bring water and comfortable shoes." />
 
-                <TextView
-                    android:id="@+id/attendees_label"
+                <!-- New stats -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Attendees"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/attendees_list"
+                    <TextView
+                        android:id="@+id/nb_sessions_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sessions: "
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/nb_sessions_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="0"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/nb_members_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="Members: "
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/nb_members_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="0"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+
+                <!-- small divider inside Info to separate stats from attendees -->
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never" />
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/dividerColor" />
 
+                <!-- Move add member button into members tab at runtime; keep here for layout editors -->
                 <Button
                     android:id="@+id/add_member_button"
                     android:layout_width="match_parent"
@@ -242,7 +311,7 @@
                     android:layout_marginTop="16dp"
                     android:backgroundTint="?attr/colorPrimary"
                     android:text="Add Member"
-                    android:textColor="@android:color/white" />
+                    android:textColor="?attr/colorSecondary" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tvSessionItemTitle" type="id" />
+    <item name="tvSessionItemDateTime" type="id" />
+    <item name="etDescription" type="id" />
+    <item name="etLocation" type="id" />
+    <item name="etEndTime" type="id" />
+    <item name="etStartTime" type="id" />
+    <item name="etDate" type="id" />
+    <item name="etSubject" type="id" />
+</resources>

@@ -8,26 +8,14 @@
         android:title="@string/instruments"
         android:iconTint="?attr/colorOnSurface" />
 
-
     <item
-        android:id="@+id/departmentFragment"
-        android:icon="@drawable/ic_department"
-        android:title="@string/department"
-        android:iconTint="?attr/colorOnSurface" />
-
-
+        android:id="@+id/usersFragment"
+        android:icon="@drawable/users"
+        android:title="@string/users"/>
     <item
-        android:id="@+id/classDetailFragment"
-        android:icon="@drawable/ic_class"
-        android:title="@string/class_detail" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"/>
 
-    <item
-        android:id="@+id/classesFragment"
-        android:icon="@drawable/ic_class"
-        android:title="@string/classes" />
 
-    <item
-        android:id="@+id/trainingFragment"
-        android:icon="@drawable/ic_session"
-        android:title="@string/training" />
 </menu>
