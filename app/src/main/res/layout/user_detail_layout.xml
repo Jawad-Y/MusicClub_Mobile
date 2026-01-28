@@ -13,9 +13,9 @@
         android:layout_height="48dp"
         android:layout_margin="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Back"
+        android:contentDescription="@string/profile_image"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
-        android:tint="?attr/colorOnSurface"
+        app:tint="?attr/colorOnSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +39,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="24dp">
 
-            <!-- Name -->
+            <!-- Name (read-only display) -->
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
@@ -50,26 +50,39 @@
                 android:gravity="center"
                 tools:text="Alex Johnson" />
 
-            <!-- Username / handle -->
+            <!-- Editable name (shown in edit mode) -->
+            <EditText
+                android:id="@+id/name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:hint="@string/label_username"
+                android:autofillHints="name"
+                android:textSize="18sp"
+                android:inputType="textPersonName"
+                android:layout_marginTop="8dp" />
+
+            <!-- Email (display) -->
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurface"
                 android:gravity="center"
                 android:layout_marginTop="4dp"
-                tools:text="alexjohnson" />
+                tools:text="alexjohnson@example.com" />
 
-            <!-- Bio / description -->
-            <TextView
-                android:id="@+id/bio"
+            <!-- Editable email (shown in edit mode) -->
+            <EditText
+                android:id="@+id/email_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="14sp"
-                tools:text="Musician • Guitarist • Songwriter\nLover of vinyl records and late-night jam sessions. Available for collaborations." />
+                android:visibility="gone"
+                android:hint="@string/label_email"
+                android:autofillHints="emailAddress"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="8dp" />
 
             <!-- Classes Joined section -->
             <TextView
@@ -80,7 +93,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
                 android:textColor="?attr/colorPrimary"
-                tools:text="Classes Joined" />
+                android:text="@string/classes_joined" />
 
             <!-- RecyclerView for classes joined (populate via adapter). Nested scrolling disabled for NestedScrollView parent. -->
             <androidx.recyclerview.widget.RecyclerView
@@ -100,7 +113,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
                 android:textColor="?attr/colorPrimary"
-                tools:text="Attendance History" />
+                android:text="@string/attendance_history" />
 
             <!-- RecyclerView for attendance history -->
             <androidx.recyclerview.widget.RecyclerView
@@ -126,8 +139,8 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_margin="16dp"
-        android:contentDescription="Edit profile"
-        android:text="Edit"
+        android:contentDescription="@string/action_edit"
+        android:text="@string/action_edit"
         android:textAllCaps="false"
         android:textColor="?attr/colorSurface"
         android:paddingLeft="12dp"

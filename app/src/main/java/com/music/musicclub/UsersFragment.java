@@ -61,9 +61,13 @@ public class UsersFragment extends Fragment {
 
             @Override
             public void onDeleteClicked(User user) {
-                // simple: show empty or later implement delete
-                Log.i(TAG, "delete clicked for user: " + user.getId());
+                showDeleteConfirmation(user);
             }
+        });
+
+        // Add User button (FAB)
+        view.findViewById(R.id.fab).setOnClickListener(v -> {
+            navigateToCreateUser();
         });
 
         loadUsers();
@@ -84,6 +88,17 @@ public class UsersFragment extends Fragment {
             Navigation.findNavController(getView()).navigate(R.id.userDetailFragment, b);
         } catch (Exception e) {
             Log.e(TAG, "navigate error", e);
+        }
+    }
+
+    private void navigateToCreateUser() {
+        if (getView() == null) return;
+        try {
+            Bundle b = new Bundle();
+            b.putInt("user_id", -1); // -1 indicates new user creation
+            Navigation.findNavController(getView()).navigate(R.id.userDetailFragment, b);
+        } catch (Exception e) {
+            Log.e(TAG, "navigate to create user error", e);
         }
     }
 
@@ -163,6 +178,92 @@ public class UsersFragment extends Fragment {
     private void showEmpty(boolean isEmpty) {
         emptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+    }
+
+    private void showDeleteConfirmation(User user) {
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Delete User")
+                .setMessage("Are you sure you want to delete " + user.getName() + "?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    performDeleteUser(user);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void performDeleteUser(User user) {
+        String token = new LoginManager(requireContext()).getToken();
+        ApiService apiService = new ApiService(requireContext(), token);
+        String deleteUrl = ApiConfig.USERS + "/" + user.getId();
+        
+        Log.d(TAG, "Deleting user: " + deleteUrl);
+        
+        // Use a custom StringRequest for DELETE since we might get 204 No Content
+        com.android.volley.toolbox.StringRequest deleteRequest = new com.android.volley.toolbox.StringRequest(
+                com.android.volley.Request.Method.DELETE,
+                deleteUrl,
+                response -> {
+                    requireActivity().runOnUiThread(() -> {
+                        android.widget.Toast.makeText(requireContext(), "User deleted successfully", android.widget.Toast.LENGTH_SHORT).show();
+                        loadUsers(); // Reload the list
+                    });
+                },
+                error -> {
+                    int status = -1;
+                    String respBody = null;
+                    if (error != null && error.networkResponse != null) {
+                        status = error.networkResponse.statusCode;
+                        try {
+                            respBody = new String(error.networkResponse.data, "UTF-8");
+                        } catch (Exception ex) {
+                            respBody = null;
+                        }
+                    }
+                    
+                    // Treat 2xx responses as success even with empty body (e.g., 204 No Content)
+                    if (status >= 200 && status < 300) {
+                        Log.i(TAG, "DELETE returned 2xx with empty body — treating as success, status=" + status);
+                        requireActivity().runOnUiThread(() -> {
+                            android.widget.Toast.makeText(requireContext(), "User deleted successfully", android.widget.Toast.LENGTH_SHORT).show();
+                            loadUsers(); // Reload the list
+                        });
+                        return;
+                    }
+                    
+                    Log.e(TAG, "Delete user failed: status=" + status + " body=" + respBody, error);
+                    final int finalStatus = status;
+                    final String finalRespBody = respBody;
+                    requireActivity().runOnUiThread(() -> {
+                        android.widget.Toast.makeText(requireContext(), "Delete failed (code=" + finalStatus + ")", android.widget.Toast.LENGTH_LONG).show();
+                        try {
+                            String msg = "Status: " + finalStatus + "\n" + (finalRespBody != null ? finalRespBody : "(no body)");
+                            new android.app.AlertDialog.Builder(requireContext())
+                                    .setTitle("Delete Failed")
+                                    .setMessage(msg)
+                                    .setPositiveButton("OK", (d, w) -> d.dismiss())
+                                    .show();
+                        } catch (Exception ignored) {}
+                    });
+                }
+        ) {
+            @Override
+            public java.util.Map<String, String> getHeaders() throws com.android.volley.AuthFailureError {
+                java.util.Map<String, String> headers = new java.util.HashMap<>();
+                headers.put("Accept", "application/json");
+                if (token != null && !token.isEmpty()) {
+                    headers.put("Authorization", "Bearer " + token);
+                }
+                return headers;
+            }
+        };
+        
+        deleteRequest.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
+                15000,
+                1,
+                1.0f
+        ));
+        
+        VolleySingleton.getInstance(requireContext()).add(deleteRequest);
     }
 
     @Override

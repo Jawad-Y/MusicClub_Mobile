@@ -133,5 +133,7 @@
     <string name="placeholder_members">0 members</string>
     <string name="placeholder_leader">Leader: -</string>
     <string name="add_user">Add User:</string>
+    <string name="classes_joined">Classes Joined</string>
+    <string name="attendance_history">Attendance History</string>
 
 </resources>
