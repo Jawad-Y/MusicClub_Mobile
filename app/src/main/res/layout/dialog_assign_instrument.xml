@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,24 +12,43 @@
         android:text="Assign Instrument"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Instrument label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Instrument"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
 
     <Spinner
         android:id="@+id/spInstrument"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"/>
+
+    <!-- User label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose User"
+        android:textStyle="bold"
         android:layout_marginTop="16dp"/>
 
     <Spinner
         android:id="@+id/spUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="6dp"/>
 
-    <Button
-        android:id="@+id/btnAssignInstrumentDialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Assign Instrument"
-        android:layout_marginTop="18dp"/>
+    <com.google.android.material.button.MaterialButton
+    android:id="@+id/btnAssignInstrumentDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Assign Instrument"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_marginTop="20dp"/>
+
 </LinearLayout>
