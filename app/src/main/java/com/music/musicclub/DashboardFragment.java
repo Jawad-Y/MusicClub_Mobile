@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class DashboardFragment extends Fragment {
 
     private int totalUsers = 0;
     private int totalInstruments = 0;
-    private List<Session> sessionsList;
+    private List<TrainingSession> sessionsList;
 
     public DashboardFragment() {
         super(R.layout.dashboard_layout);
@@ -126,12 +129,21 @@ public class DashboardFragment extends Fragment {
                         for (int i = 0; i < sessions.length(); i++) {
                             JSONObject obj = sessions.optJSONObject(i);
                             if (obj != null) {
-                                // Backend returns "subject" not "title"
-                                String subject = obj.optString("subject", "Session");
-                                String date = obj.optString("date", "");
-                                String location = obj.optString("location", "");
-                                Session session = new Session(subject, date, location);
-                                sessionsList.add(session);
+                                // Build TrainingSession model from JSON
+                                TrainingSession ts = TrainingSession.fromJson(obj);
+
+                                // Filter: only upcoming sessions (date after today)
+                                try {
+                                    SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                    Date today = new Date();
+                                    Date sessionDate = apiFormat.parse(ts.getDate());
+                                    if (sessionDate != null && sessionDate.after(today)) {
+                                        sessionsList.add(ts);
+                                    }
+                                } catch (Exception e) {
+                                    // If parse fails, include the session to be safe
+                                    sessionsList.add(ts);
+                                }
                             }
                         }
                         updateDashboard();
@@ -151,7 +163,7 @@ public class DashboardFragment extends Fragment {
         dashboardItems.clear();
         dashboardItems.add(new DashboardItem(DashboardItem.Type.METRIC_USERS, "Total Users", String.valueOf(totalUsers), null));
         dashboardItems.add(new DashboardItem(DashboardItem.Type.METRIC_INSTRUMENTS, "Total Instruments", String.valueOf(totalInstruments), null));
-        for (Session session : sessionsList) {
+        for (TrainingSession session : sessionsList) {
             dashboardItems.add(new DashboardItem(DashboardItem.Type.SESSION, "", "", session));
         }
         adapter.notifyDataSetChanged();
@@ -163,9 +175,9 @@ public class DashboardFragment extends Fragment {
         public Type type;
         public String title;
         public String value;
-        public Session session;
+        public TrainingSession session;
 
-        public DashboardItem(Type type, String title, String value, Session session) {
+        public DashboardItem(Type type, String title, String value, TrainingSession session) {
             this.type = type;
             this.title = title;
             this.value = value;
@@ -201,12 +213,37 @@ public class DashboardFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             DashboardItem item = items.get(position);
-            if (holder instanceof SessionViewHolder) {
+                if (holder instanceof SessionViewHolder) {
                 SessionViewHolder vh = (SessionViewHolder) holder;
-                Session session = item.session;
-                vh.tvTitle.setText(session.title);
-                vh.tvDate.setText(session.date);
-                vh.tvLocation.setText(session.location);
+                TrainingSession session = item.session;
+                vh.tvTitle.setText(session.getSubject());
+                vh.tvDate.setText(session.getDate());
+                vh.tvLocation.setText(session.getLocation());
+
+                // Navigate to session detail on click (pass session_json)
+                vh.itemView.setOnClickListener(v -> {
+                    try {
+                        Bundle b = new Bundle();
+                        JSONObject json = new JSONObject();
+                        json.put("id", session.getId());
+                        json.put("subject", session.getSubject());
+                        json.put("date", session.getDate());
+                        json.put("start_time", session.getStartTime());
+                        json.put("end_time", session.getEndTime());
+                        json.put("location", session.getLocation());
+                        json.put("description", session.getDescription());
+                        json.put("trainer_id", session.getTrainerId());
+                        json.put("trainer_name", session.getTrainerName());
+                        json.put("attendance_total", session.getAttendanceTotal());
+                        json.put("attendance_present", session.getAttendancePresent());
+                        json.put("attendance_absent", session.getAttendanceAbsent());
+                        json.put("attendance_late", session.getAttendanceLate());
+                        b.putString("session_json", json.toString());
+
+                        androidx.navigation.Navigation.findNavController(v)
+                                .navigate(R.id.SessionFragment, b);
+                    } catch (Exception ignored) {}
+                });
             } else if (holder instanceof MetricViewHolder) {
                 MetricViewHolder vh = (MetricViewHolder) holder;
                 vh.tvTitle.setText(item.title);
