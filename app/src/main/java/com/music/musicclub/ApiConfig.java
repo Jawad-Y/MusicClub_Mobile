@@ -1,7 +1,7 @@
 package com.music.musicclub;
 public class ApiConfig {
 
-    public static final String BASE_URL = "http://192.168.1.12:8000/api/";
+    public static final String BASE_URL = "http://192.168.0.108:8000/api/";
 
     // Auth
     public static final String LOGIN = BASE_URL + "login";

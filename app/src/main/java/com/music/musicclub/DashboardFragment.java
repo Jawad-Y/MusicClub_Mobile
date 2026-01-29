@@ -126,7 +126,11 @@ public class DashboardFragment extends Fragment {
                         for (int i = 0; i < sessions.length(); i++) {
                             JSONObject obj = sessions.optJSONObject(i);
                             if (obj != null) {
-                                Session session = new Session(obj.optString("title", "Session"), obj.optString("date", ""), obj.optString("location", ""));
+                                // Backend returns "subject" not "title"
+                                String subject = obj.optString("subject", "Session");
+                                String date = obj.optString("date", "");
+                                String location = obj.optString("location", "");
+                                Session session = new Session(subject, date, location);
                                 sessionsList.add(session);
                             }
                         }
