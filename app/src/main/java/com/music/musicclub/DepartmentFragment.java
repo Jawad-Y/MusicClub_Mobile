@@ -54,13 +54,13 @@ public class DepartmentFragment extends Fragment {
         adapter = new DepartmentAdapter(this, departments);
         recyclerView.setAdapter(adapter);
 
-        // 1) Add Department button
+        // Add Department button
         btnAddDepartment.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_department_to_addEditDepartment);
         });
 
-        // 2) Load departments from API
+        // Load departments from API
         loadDepartments();
     }
 
@@ -82,7 +82,6 @@ public class DepartmentFragment extends Fragment {
                         String name = obj.optString("department_name", "Unknown");
                         int leaderId = obj.optInt("leader_id", -1);
 
-                        // ⭐ هنا نجيب leader object
                         JSONObject leaderObj = obj.optJSONObject("leader");
                         String leaderName = "No Leader";
 
@@ -101,6 +100,4 @@ public class DepartmentFragment extends Fragment {
             Toast.makeText(requireContext(), "Failed to load departments", Toast.LENGTH_SHORT).show();
         });
     }
-
-
 }

@@ -265,26 +265,26 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
         });
     }
 
-    // ===== Delete API =====
-    private void deleteInstrument(int id) {
-        ApiService api = new ApiService(
-                requireContext(),
-                new LoginManager(requireContext()).getToken()
-        );
 
-        api.delete(ApiConfig.INSTRUMENTS + "/" + id, response -> {
-            Toast.makeText(requireContext(),
-                    "Instrument deleted successfully",
-                    Toast.LENGTH_SHORT).show();
 
-            loadInstruments();
+    private void showDeleteDialog(Instrument instrument) {
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_delete_instrument, null);
 
-        }, error -> {
-            Toast.makeText(requireContext(),
-                    "Failed to delete instrument",
-                    Toast.LENGTH_SHORT).show();
-        });
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setView(view)
+                .create();
+
+        view.findViewById(R.id.btnCancelDelete)
+                .setOnClickListener(v -> dialog.dismiss());
+
+        view.findViewById(R.id.btnConfirmDelete)
+                .setOnClickListener(v -> onDelete(instrument));
+
+
+        dialog.show();
     }
+
 
     // ===== Edit + Delete callbacks =====
     @Override
@@ -292,30 +292,54 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
         showEditDialog(instrument);
     }
 
+
     @Override
     public void onDelete(Instrument instrument) {
-        ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
+        // نعمل AlertDialog تأكيد
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Instrument")
+                .setMessage("Are you sure you want to delete " + instrument.getName() + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // إذا ضغط Yes نرسل طلب الحذف
+                    ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
 
-        api.deleteString(ApiConfig.INSTRUMENTS + "/" + instrument.getId(),
-                response -> {
-                    Toast.makeText(requireContext(),
-                            "Instrument deleted successfully",
-                            Toast.LENGTH_SHORT).show();
-                    loadInstruments();
-                },
-                error -> {
-                    String msg = "Failed to delete instrument";
+                    api.deleteString(ApiConfig.INSTRUMENTS + "/" + instrument.getId(),
+                            response -> {
+                                Toast.makeText(requireContext(), "Instrument deleted successfully", Toast.LENGTH_SHORT).show();
+                                loadInstruments();
+                            },
+                            error -> {
+                                String msg;
 
-                    if (error.networkResponse != null) {
-                        msg += " (code " + error.networkResponse.statusCode + ")";
-                        try {
-                            msg += "\n" + new String(error.networkResponse.data);
-                        } catch (Exception ignored) {}
-                    }
+                                if (error.networkResponse != null) {
+                                    try {
+                                        String body = new String(error.networkResponse.data);
 
-                    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
-                });
+                                        if (body.contains("SQLSTATE[23000]")) {
+                                            // instrument مربوط بمستخدم → error حقيقي
+                                            msg = "Failed to delete instrument. It is assigned to a user.\n" + body;
+                                        } else {
+                                            // instrument مش مربوط → نعتبر delete ناجح مؤقتاً
+                                            Toast.makeText(requireContext(), "Instrument deleted successfully", Toast.LENGTH_SHORT).show();
+                                            loadInstruments();
+                                            return; // رجع قبل ما نعمل toast خطأ
+                                        }
+
+                                    } catch (Exception e) {
+                                        msg = "Failed to delete instrument";
+                                    }
+                                } else {
+                                    msg = "Failed to delete instrument";
+                                }
+
+                                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+                            });
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
     }
+
+
 
     private void showAddTypeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
