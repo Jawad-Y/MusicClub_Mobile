@@ -63,12 +63,34 @@ public class ClassesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         fabAddClass.setOnClickListener(v -> {
-            CreateClassDialog.show(requireContext(), (className, leaderId) -> {
+            CreateClassDialog.show(requireContext(), (className, leaderId, departmentId) -> {
                 LoginManager lm = new LoginManager(requireContext());
                 ApiService api = new ApiService(requireContext(), lm.getToken());
                 JSONObject body = new JSONObject();
-                try { body.put("class_name", className); if (leaderId > 0) body.put("class_leader_id", leaderId); } catch (Exception ignored) {}
-                api.post(ApiConfig.MY_CLASSES, body, resp -> loadClasses(), error -> Toast.makeText(requireContext(), "Failed to create class", Toast.LENGTH_SHORT).show());
+                try { 
+                    body.put("class_name", className); 
+                    body.put("department_id", departmentId);
+                    if (leaderId > 0) body.put("class_leader_id", leaderId); 
+                } catch (Exception e) {
+                    Toast.makeText(requireContext(), "Failed to prepare request: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                api.post(ApiConfig.MY_CLASSES, body, 
+                    resp -> {
+                        Toast.makeText(requireContext(), "Class created successfully", Toast.LENGTH_SHORT).show();
+                        loadClasses();
+                    }, 
+                    error -> {
+                        String msg = "Failed to create class";
+                        try {
+                            if (error.networkResponse != null && error.networkResponse.data != null) {
+                                msg += ": " + new String(error.networkResponse.data);
+                            } else if (error.getMessage() != null) {
+                                msg += ": " + error.getMessage();
+                            }
+                        } catch (Exception ex) {}
+                        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+                    });
             });
         });
 

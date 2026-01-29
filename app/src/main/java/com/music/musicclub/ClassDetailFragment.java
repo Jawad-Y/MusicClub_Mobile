@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +54,7 @@ public class ClassDetailFragment extends Fragment {
 
     // Adapters (backed by lists). Keep as instance fields so loader methods can update them.
     private TrainingSessionAdapter trainingAdapter;
+    private TrainingSessionAdapter upcomingAdapter;
     private MembersAdapter membersAdapter;
 
     public ClassDetailFragment() {
@@ -90,18 +92,43 @@ public class ClassDetailFragment extends Fragment {
 
         // Ephemeral views as locals
         RecyclerView trainingSessionsList = view.findViewById(R.id.training_sessions_list);
+        RecyclerView upcomingSessionsList = view.findViewById(R.id.upcoming_sessions_list);
         RecyclerView membersList = view.findViewById(R.id.members_list);
         TextView addMemberButton = view.findViewById(R.id.add_member_button);
         TextView nbSessionsCount = view.findViewById(R.id.nb_sessions_count);
         TextView nbMembersCount = view.findViewById(R.id.nb_members_count);
         nbSessionsCountView = nbSessionsCount; nbMembersCountView = nbMembersCount;
         View addTrainingButton = view.findViewById(R.id.add_training_button);
-        // Setup adapters
-        trainingAdapter = new TrainingSessionAdapter(new ArrayList<>());
-        membersAdapter = new MembersAdapter(new ArrayList<>(), null);
+
+        // Setup adapters with click listeners
+        TrainingSessionAdapter.OnSessionClickListener sessionClickListener = session -> {
+            // Navigate to SessionFragment with session data
+            Bundle args = new Bundle();
+            try {
+                org.json.JSONObject sessionJson = new org.json.JSONObject();
+                sessionJson.put("id", session.id);
+                sessionJson.put("subject", session.subject);
+                sessionJson.put("date", session.date);
+                sessionJson.put("start_time", session.start);
+                sessionJson.put("end_time", session.end);
+                sessionJson.put("location", session.location);
+                args.putString("session_json", sessionJson.toString());
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Error opening session details", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            NavHostFragment.findNavController(this).navigate(R.id.SessionFragment, args);
+        };
+
+        trainingAdapter = new TrainingSessionAdapter(new ArrayList<>(), sessionClickListener);
+        upcomingAdapter = new TrainingSessionAdapter(new ArrayList<>(), sessionClickListener);
+        membersAdapter = new MembersAdapter(new ArrayList<>(), null, classId, () -> loadMembers(classId));
 
         trainingSessionsList.setLayoutManager(new LinearLayoutManager(requireContext()));
         trainingSessionsList.setAdapter(trainingAdapter);
+
+        upcomingSessionsList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        upcomingSessionsList.setAdapter(upcomingAdapter);
 
         membersList.setLayoutManager(new LinearLayoutManager(requireContext()));
         membersList.setAdapter(membersAdapter);
@@ -142,11 +169,15 @@ public class ClassDetailFragment extends Fragment {
         btnEditClass.setOnClickListener(v -> {
             if (classId == -1) {
                 // create new class via dialog
-                CreateClassDialog.show(requireContext(), (name, leaderId) -> {
+                CreateClassDialog.show(requireContext(), (name, leaderId, departmentId) -> {
                     LoginManager lm = new LoginManager(requireContext());
                     ApiService api = new ApiService(requireContext(), lm.getToken());
                     org.json.JSONObject body = new org.json.JSONObject();
-                    try { body.put("class_name", name); if (leaderId > 0) body.put("class_leader_id", leaderId); }
+                    try { 
+                        body.put("class_name", name); 
+                        body.put("department_id", departmentId);
+                        if (leaderId > 0) body.put("class_leader_id", leaderId); 
+                    }
                     catch (Exception ignored) {}
                     api.post(ApiConfig.MY_CLASSES, body, resp -> {
                         int id = resp.optInt("id", -1);
@@ -161,11 +192,16 @@ public class ClassDetailFragment extends Fragment {
                 // prefill with current values
                 String currentName = title.getText().toString();
                 int currentLeaderId = -1; // unknown; we can try to fetch from loaded class details if stored — keep -1
-                CreateClassDialog.showEdit(requireContext(), currentName, currentLeaderId, (name, leaderId) -> {
+                int currentDeptId = -1; // will be selected from spinner
+                CreateClassDialog.showEdit(requireContext(), currentName, currentLeaderId, currentDeptId, (name, leaderId, departmentId) -> {
                     LoginManager lm = new LoginManager(requireContext());
                     ApiService api = new ApiService(requireContext(), lm.getToken());
                     org.json.JSONObject body = new org.json.JSONObject();
-                    try { body.put("class_name", name); if (leaderId > 0) body.put("class_leader_id", leaderId); }
+                    try { 
+                        body.put("class_name", name); 
+                        body.put("department_id", departmentId);
+                        if (leaderId > 0) body.put("class_leader_id", leaderId); 
+                    }
                     catch (Exception ignored) {}
                     api.put(ApiConfig.MY_CLASSES + "/" + classId, body, resp -> {
                         Toast.makeText(requireContext(), "Class updated", Toast.LENGTH_SHORT).show();
@@ -181,6 +217,11 @@ public class ClassDetailFragment extends Fragment {
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
+
+        // Initialize tab visibility - explicitly set training tab visible first
+        switchToTab(0, addMemberButton, addTrainingButton);
+
+        // Select first tab
         if (localTabLayout.getTabCount() > 0) {
             TabLayout.Tab t = localTabLayout.getTabAt(0);
             if (t != null) t.select();
@@ -287,20 +328,52 @@ public class ClassDetailFragment extends Fragment {
             if (arr == null) arr = response.optJSONArray("sessions");
 
             trainingAdapter.clear();
+            upcomingAdapter.clear();
+
+            // Get current date for comparison
+            String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date());
+
             if (arr != null) {
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject o = arr.optJSONObject(i);
                     if (o == null) continue;
+
+                    // Client-side filtering: ensure this session belongs to the requested class
+                    int sessionClassId = o.optInt("class_id", -1);
+                    if (sessionClassId == -1) sessionClassId = o.optInt("myclass_id", -1);
+                    if (sessionClassId == -1) {
+                        String s = o.optString("class_id", "");
+                        if (!s.isEmpty()) {
+                            try { sessionClassId = Integer.parseInt(s); } catch (NumberFormatException ignored) {}
+                        }
+                    }
+                    if (sessionClassId == -1) {
+                        JSONObject nested = o.optJSONObject("class");
+                        if (nested != null) sessionClassId = nested.optInt("id", -1);
+                    }
+                    // Skip if session doesn't belong to this class
+                    if (sessionClassId != -1 && sessionClassId != id) continue;
+
                     int sid = o.optInt("id", -1);
                     String subject = o.optString("subject", o.optString("name", "Session"));
                     String date = o.optString("date", "");
                     String start = o.optString("start_time", "");
                     String end = o.optString("end_time", "");
                     String loc = o.optString("location", "");
-                    trainingAdapter.add(new TrainingSession(sid, subject, date, start, end, loc));
+
+                    TrainingSession session = new TrainingSession(sid, subject, date, start, end, loc);
+
+                    // Add to all sessions
+                    trainingAdapter.add(session);
+
+                    // Add to upcoming sessions if date >= current date
+                    if (!date.isEmpty() && date.compareTo(currentDate) >= 0) {
+                        upcomingAdapter.add(session);
+                    }
                 }
             }
             trainingAdapter.notifyDataSetChanged();
+            upcomingAdapter.notifyDataSetChanged();
             // update sessions count in info tab
             if (nbSessionsCountView != null) nbSessionsCountView.setText(String.valueOf(trainingAdapter.items.size()));
         }, error -> Toast.makeText(requireContext(), "Failed to load training sessions", Toast.LENGTH_SHORT).show());
@@ -352,7 +425,10 @@ public class ClassDetailFragment extends Fragment {
 
                     String name = user.optString("full_name", user.optString("name", "Unnamed"));
                     String email = user.optString("email", "");
-                    membersAdapter.add(new Member(uid, name, email));
+                    // Get the classmember record ID for deletion (this is the top-level object's id)
+                    int classmemberId = o.optInt("id", -1);
+                    android.util.Log.d("ClassDetailFragment", "Member loaded: userId=" + uid + ", classmemberId=" + classmemberId + ", name=" + name);
+                    membersAdapter.add(new Member(uid, name, email, classmemberId));
                 }
             }
 
@@ -434,14 +510,23 @@ public class ClassDetailFragment extends Fragment {
     }
 
     // --- Models and adapters ---
-    private static class TrainingSession {
+    public static class TrainingSession {
         int id; String subject; String date; String start; String end; String location;
         TrainingSession(int id, String subject, String date, String start, String end, String location) { this.id = id; this.subject = subject; this.date = date; this.start = start; this.end = end; this.location = location; }
     }
 
     private static class TrainingSessionAdapter extends RecyclerView.Adapter<TrainingSessionAdapter.VH> {
         final ArrayList<TrainingSession> items;
-        TrainingSessionAdapter(ArrayList<TrainingSession> items) { this.items = items; }
+        final OnSessionClickListener clickListener;
+
+        interface OnSessionClickListener {
+            void onSessionClick(TrainingSession session);
+        }
+
+        TrainingSessionAdapter(ArrayList<TrainingSession> items, OnSessionClickListener listener) {
+            this.items = items;
+            this.clickListener = listener;
+        }
         void clear() { items.clear(); }
         void add(TrainingSession s) { items.add(s); }
 
@@ -460,6 +545,11 @@ public class ClassDetailFragment extends Fragment {
             if (!TextUtils.isEmpty(s.start) && !TextUtils.isEmpty(s.end)) meta += " • " + s.start + " - " + s.end;
             if (!TextUtils.isEmpty(s.location)) meta += "  •  " + s.location;
             holder.meta.setText(meta);
+
+            // Add click listener
+            holder.itemView.setOnClickListener(v -> {
+                if (clickListener != null) clickListener.onSessionClick(s);
+            });
         }
 
         @Override public int getItemCount() { return items.size(); }
@@ -470,22 +560,55 @@ public class ClassDetailFragment extends Fragment {
         }
     }
 
-    public static class Member { int id; String name; String email; int roleId; String roleName; Member(int id, String name, String email){this(id,name,email,-1,null);} Member(int id, String name, String email, int roleId, String roleName){this.id=id;this.name=name;this.email=email;this.roleId=roleId;this.roleName=roleName;} }
+    public static class Member { 
+        int id; // user id
+        String name; 
+        String email; 
+        int roleId; 
+        String roleName; 
+        int classmemberId; // classmember record id for deletion
+        
+        Member(int id, String name, String email) {
+            this(id, name, email, -1, null, -1);
+        }
+        Member(int id, String name, String email, int classmemberId) {
+            this(id, name, email, -1, null, classmemberId);
+        }
+        // Constructor for MemberPickerDialog (no classmemberId needed)
+        Member(int id, String name, String email, int roleId, String roleName) {
+            this(id, name, email, roleId, roleName, -1);
+        }
+        Member(int id, String name, String email, int roleId, String roleName, int classmemberId) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.roleId = roleId;
+            this.roleName = roleName;
+            this.classmemberId = classmemberId;
+        }
+    }
 
     private static class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VH> {
         final List<Member> items;
         private final OnItemClickListener listener;
+        private final int classId;
+        private final Runnable onMemberRemoved;
 
         public interface OnItemClickListener { void onItemClick(Member m); }
 
-        MembersAdapter(List<Member> items, OnItemClickListener listener){this.items=items;this.listener=listener;}
+        MembersAdapter(List<Member> items, OnItemClickListener listener, int classId, Runnable onMemberRemoved){
+            this.items=items;
+            this.listener=listener;
+            this.classId=classId;
+            this.onMemberRemoved=onMemberRemoved;
+        }
         void clear(){items.clear();}
         void add(Member m){items.add(m);}
 
         @NonNull
         @Override
         public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_member, parent, false);
             return new VH(v);
         }
 
@@ -495,12 +618,62 @@ public class ClassDetailFragment extends Fragment {
             holder.title.setText(m.name);
             holder.subtitle.setText(m.email != null ? m.email : "");
             holder.itemView.setOnClickListener(v -> { if (listener != null) listener.onItemClick(m); });
+
+            // Remove button click
+            holder.btnRemove.setOnClickListener(v -> {
+                new AlertDialog.Builder(holder.itemView.getContext())
+                        .setTitle("Remove Member")
+                        .setMessage("Are you sure you want to remove " + m.name + " from this class?")
+                        .setPositiveButton("Remove", (dialog, which) -> {
+                            // Call API to remove member using stored classmember record ID
+                            android.util.Log.d("ClassDetailFragment", "Deleting member: userId=" + m.id + ", classmemberId=" + m.classmemberId);
+                            if (m.classmemberId == -1) {
+                                Toast.makeText(holder.itemView.getContext(), "Cannot remove: missing record ID (classmemberId=-1)", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            LoginManager lm = new LoginManager(holder.itemView.getContext());
+                            ApiService api = new ApiService(holder.itemView.getContext(), lm.getToken());
+                            
+                            String deleteUrl = ApiConfig.BASE_URL + "classmembers/" + m.classmemberId;
+                            android.util.Log.d("ClassDetailFragment", "DELETE URL: " + deleteUrl);
+                            
+                            api.deleteString(deleteUrl,
+                                    deleteResp -> {
+                                        android.util.Log.d("ClassDetailFragment", "Delete success: " + deleteResp);
+                                        Toast.makeText(holder.itemView.getContext(), "Member removed", Toast.LENGTH_SHORT).show();
+                                        if (onMemberRemoved != null) onMemberRemoved.run();
+                                    },
+                                    deleteErr -> {
+                                        String errMsg = "Failed to remove member";
+                                        try {
+                                            if (deleteErr.networkResponse != null && deleteErr.networkResponse.data != null) {
+                                                errMsg += ": " + new String(deleteErr.networkResponse.data);
+                                            } else if (deleteErr.getMessage() != null) {
+                                                errMsg += ": " + deleteErr.getMessage();
+                                            }
+                                        } catch (Exception ignored) {}
+                                        android.util.Log.e("ClassDetailFragment", "Delete error: " + errMsg, deleteErr);
+                                        Toast.makeText(holder.itemView.getContext(), errMsg, Toast.LENGTH_LONG).show();
+                                    });
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            });
         }
 
         @Override
         public int getItemCount(){return items.size();}
 
-        static class VH extends RecyclerView.ViewHolder { TextView title, subtitle; VH(@NonNull View itemView){ super(itemView); title = itemView.findViewById(android.R.id.text1); subtitle = itemView.findViewById(android.R.id.text2); } }
+        static class VH extends RecyclerView.ViewHolder {
+            TextView title, subtitle;
+            android.widget.ImageButton btnRemove;
+            VH(@NonNull View itemView){
+                super(itemView);
+                title = itemView.findViewById(android.R.id.text1);
+                subtitle = itemView.findViewById(android.R.id.text2);
+                btnRemove = itemView.findViewById(R.id.btn_remove_member);
+            }
+        }
     }
 
     // --- Member picker dialog (searchable) ---
@@ -541,7 +714,7 @@ public class ClassDetailFragment extends Fragment {
                                 dialog.dismiss();
                             }).show();
                 }
-            });
+            }, -1, null); // Pass -1 for classId and null for onMemberRemoved since this is just a picker
             rv.setAdapter(adapter);
 
             // Load users from API
@@ -614,26 +787,95 @@ public class ClassDetailFragment extends Fragment {
             EditText start = new EditText(ctx); start.setHint("Start time (HH:MM)"); container.addView(start);
             EditText end = new EditText(ctx); end.setHint("End time (HH:MM)"); container.addView(end);
             EditText loc = new EditText(ctx); loc.setHint("Location (optional)"); container.addView(loc);
-
-            AlertDialog dialog = new AlertDialog.Builder(ctx).setTitle("Add Training Session").setView(container)
-                    .setPositiveButton("Add", (d, w) -> {
-                        String sub = subject.getText().toString().trim();
-                        String dt = date.getText().toString().trim();
-                        String st = start.getText().toString().trim();
-                        String en = end.getText().toString().trim();
-                        String lc = loc.getText().toString().trim();
-                        if (sub.isEmpty() || dt.isEmpty() || st.isEmpty() || en.isEmpty()) {
-                            Toast.makeText(ctx, "Please fill subject, date, start and end", Toast.LENGTH_SHORT).show();
-                            return;
+            
+            // Trainer picker
+            TextView trainerLabel = new TextView(ctx);
+            trainerLabel.setText("Trainer:");
+            trainerLabel.setPadding(0, 16, 0, 4);
+            container.addView(trainerLabel);
+            
+            android.widget.Spinner spinnerTrainer = new android.widget.Spinner(ctx);
+            container.addView(spinnerTrainer);
+            
+            final java.util.List<Integer> trainerIds = new java.util.ArrayList<>();
+            final java.util.List<String> trainerNames = new java.util.ArrayList<>();
+            
+            // Load trainers (users with trainer role)
+            LoginManager lm = new LoginManager(ctx);
+            ApiService api = new ApiService(ctx, lm.getToken());
+            api.get(ApiConfig.USERS, response -> {
+                try {
+                    JSONArray arr = response.optJSONArray("data");
+                    if (arr == null) arr = response.optJSONArray("users");
+                    if (arr != null) {
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject u = arr.optJSONObject(i);
+                            if (u != null) {
+                                // Add all users as potential trainers (or filter by role_id if needed)
+                                trainerIds.add(u.optInt("id", -1));
+                                String name = u.optString("full_name", u.optString("name", "User " + u.optInt("id")));
+                                trainerNames.add(name);
+                            }
                         }
-                        org.json.JSONObject body = new org.json.JSONObject();
-                        try { body.put("class_id", classId); body.put("subject", sub); body.put("date", dt); body.put("start_time", st); body.put("end_time", en); if (!lc.isEmpty()) body.put("location", lc); }
-                        catch (Exception ignored) {}
-                        LoginManager lm = new LoginManager(ctx);
-                        ApiService api = new ApiService(ctx, lm.getToken());
-                        api.post(ApiConfig.TRAINING_SESSIONS, body, resp -> cb.onCreated(), err -> Toast.makeText(ctx, "Failed to create session", Toast.LENGTH_SHORT).show());
-                    }).setNegativeButton("Cancel", null).create();
+                    }
+                    android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(ctx, 
+                        android.R.layout.simple_spinner_item, trainerNames);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerTrainer.setAdapter(adapter);
+                } catch (Exception ignored) {}
+            }, error -> Toast.makeText(ctx, "Failed to load trainers", Toast.LENGTH_SHORT).show());
+
+            AlertDialog dialog = new AlertDialog.Builder(ctx)
+                    .setTitle("Add Training Session")
+                    .setView(container)
+                    .setPositiveButton("Add", null)
+                    .setNegativeButton("Cancel", null)
+                    .create();
             dialog.show();
+            
+            // Override positive button to prevent auto-dismiss on validation failure
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                String sub = subject.getText().toString().trim();
+                String dt = date.getText().toString().trim();
+                String st = start.getText().toString().trim();
+                String en = end.getText().toString().trim();
+                String lc = loc.getText().toString().trim();
+                if (sub.isEmpty() || dt.isEmpty() || st.isEmpty() || en.isEmpty()) {
+                    Toast.makeText(ctx, "Please fill subject, date, start and end", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (trainerIds.isEmpty() || spinnerTrainer.getSelectedItemPosition() < 0) {
+                    Toast.makeText(ctx, "Please select a trainer", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int trainerId = trainerIds.get(spinnerTrainer.getSelectedItemPosition());
+                
+                org.json.JSONObject body = new org.json.JSONObject();
+                try { 
+                    body.put("class_id", classId); 
+                    body.put("trainer_id", trainerId);
+                    body.put("subject", sub); 
+                    body.put("date", dt); 
+                    body.put("start_time", st); 
+                    body.put("end_time", en); 
+                    if (!lc.isEmpty()) body.put("location", lc); 
+                } catch (Exception ignored) {}
+                LoginManager lm2 = new LoginManager(ctx);
+                ApiService api2 = new ApiService(ctx, lm2.getToken());
+                api2.post(ApiConfig.TRAINING_SESSIONS, body, resp -> {
+                    Toast.makeText(ctx, "Session created", Toast.LENGTH_SHORT).show();
+                    cb.onCreated();
+                    dialog.dismiss();
+                }, err -> {
+                    String msg = "Failed to create session";
+                    try {
+                        if (err.networkResponse != null && err.networkResponse.data != null) {
+                            msg += ": " + new String(err.networkResponse.data);
+                        }
+                    } catch (Exception ignored) {}
+                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+                });
+            });
         }
     }
 
