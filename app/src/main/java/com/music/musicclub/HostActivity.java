@@ -59,6 +59,18 @@ public class HostActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check if token is still valid when resuming
+        loginManager = new LoginManager(this);
+        String currentToken = loginManager.getToken();
+        
+        if (currentToken == null || currentToken.trim().isEmpty()) {
+            goToLogin();
+        }
+    }
+
     private void initUi() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

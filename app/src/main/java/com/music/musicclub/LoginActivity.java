@@ -34,6 +34,16 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         loginManager = new LoginManager(this);
 
+        // Check if already logged in
+        String existingToken = loginManager.getToken();
+        if (existingToken != null && !existingToken.trim().isEmpty()) {
+            // Already logged in, go to HostActivity
+            Intent intent = new Intent(LoginActivity.this, HostActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
