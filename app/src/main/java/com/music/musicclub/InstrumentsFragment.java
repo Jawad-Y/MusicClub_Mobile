@@ -33,7 +33,6 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
     private InstrumentAdapter adapter;
     private ArrayList<Instrument> instruments;
 
-    // **ADD THESE**
     private ArrayList<InstrumentItem> instrumentItems = new ArrayList<>();
     private ArrayList<UserItem> userItems = new ArrayList<>();
 
@@ -53,7 +52,7 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
         recyclerView.setAdapter(adapter);
 
         loadInstruments();
-        loadUsers(); // **important**
+        loadUsers();
 
         FloatingActionButton fab = view.findViewById(R.id.fabAddInstrument);
         fab.setOnClickListener(v -> showAddDialog());
@@ -116,7 +115,6 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
 
                     int id = obj.getInt("id");
 
-                    // ✅ هنا نغير الاسم ل full_name لأن API بتعطيه هيك
                     String name = obj.optString("full_name", obj.optString("name", "Unknown"));
 
                     userItems.add(new UserItem(id, name));
@@ -295,12 +293,10 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
 
     @Override
     public void onDelete(Instrument instrument) {
-        // نعمل AlertDialog تأكيد
         new AlertDialog.Builder(requireContext())
                 .setTitle("Delete Instrument")
                 .setMessage("Are you sure you want to delete " + instrument.getName() + "?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    // إذا ضغط Yes نرسل طلب الحذف
                     ApiService api = new ApiService(requireContext(), new LoginManager(requireContext()).getToken());
 
                     api.deleteString(ApiConfig.INSTRUMENTS + "/" + instrument.getId(),
@@ -316,13 +312,11 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
                                         String body = new String(error.networkResponse.data);
 
                                         if (body.contains("SQLSTATE[23000]")) {
-                                            // instrument مربوط بمستخدم → error حقيقي
                                             msg = "Failed to delete instrument. It is assigned to a user.\n" + body;
                                         } else {
-                                            // instrument مش مربوط → نعتبر delete ناجح مؤقتاً
                                             Toast.makeText(requireContext(), "Instrument deleted successfully", Toast.LENGTH_SHORT).show();
                                             loadInstruments();
-                                            return; // رجع قبل ما نعمل toast خطأ
+                                            return;
                                         }
 
                                     } catch (Exception e) {
@@ -450,7 +444,6 @@ public class InstrumentsFragment extends Fragment implements InstrumentAdapter.O
             body.put("instrument_id", instrumentId);
             body.put("user_id", userId);
 
-            // ✅ Add assigned_at (required by backend)
             body.put("assigned_at", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                     .format(new Date()));
 
