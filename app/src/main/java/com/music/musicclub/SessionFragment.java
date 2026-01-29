@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,6 +72,7 @@ public class SessionFragment extends Fragment {
             }
         }
 
+        // --- BUTTONS FIX ---
         btnEdit.setOnClickListener(v -> showEditDialog());
         btnDelete.setOnClickListener(v -> showDeleteDialog());
     }
@@ -100,7 +102,6 @@ public class SessionFragment extends Fragment {
                     try {
                         JSONArray arr = response.optJSONArray("data");
                         if (arr != null) {
-                            // Reset counts
                             session.setAttendanceTotal(0);
                             session.setAttendancePresent(0);
                             session.setAttendanceAbsent(0);
@@ -127,7 +128,6 @@ public class SessionFragment extends Fragment {
                             }
                         }
 
-                        // Update UI
                         bindSession(session);
 
                     } catch (Exception e) {
@@ -151,7 +151,6 @@ public class SessionFragment extends Fragment {
         EditText etDescription = dialogView.findViewById(R.id.etDescription);
         Spinner spTrainer = dialogView.findViewById(R.id.spTrainer);
 
-        // Pre-fill current values
         etSubject.setText(session.getSubject());
         etDate.setText(session.getDate());
         etStartTime.setText(session.getStartTime());
@@ -159,7 +158,7 @@ public class SessionFragment extends Fragment {
         etLocation.setText(session.getLocation());
         etDescription.setText(session.getDescription());
 
-        // Load trainers dynamically
+        // Load trainers
         String token = new LoginManager(requireContext()).getToken();
         ApiService apiService = new ApiService(requireContext(), token);
 
@@ -173,7 +172,7 @@ public class SessionFragment extends Fragment {
                         if (arr != null) {
                             for (int i = 0; i < arr.length(); i++) {
                                 JSONObject obj = arr.optJSONObject(i);
-                                if (obj != null && obj.optInt("role_id") == 7) { // Only trainers
+                                if (obj != null && obj.optInt("role_id") == 7) {
                                     trainerNames.add(obj.optString("full_name"));
                                     trainerIds.add(obj.optInt("id"));
                                 }
@@ -185,11 +184,8 @@ public class SessionFragment extends Fragment {
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spTrainer.setAdapter(adapter);
 
-                        // Pre-select current trainer
                         int pos = trainerNames.indexOf(session.getTrainerName());
                         if (pos >= 0) spTrainer.setSelection(pos);
-
-                        // Save trainerIds for saving
                         spTrainer.setTag(trainerIds);
 
                     } catch (Exception e) {
@@ -212,7 +208,7 @@ public class SessionFragment extends Fragment {
     private void saveEditedSession(EditText etSubject, EditText etDate, EditText etStartTime, EditText etEndTime,
                                    EditText etLocation, EditText etDescription, Spinner spTrainer, ApiService apiService) {
         try {
-            JSONObject body = session.toJson(); // get original JSON
+            JSONObject body = session.toJson();
             body.put("subject", etSubject.getText().toString());
             body.put("date", etDate.getText().toString());
             body.put("start_time", etStartTime.getText().toString());
@@ -230,7 +226,6 @@ public class SessionFragment extends Fragment {
 
             apiService.put(ApiConfig.TRAINING_SESSIONS + "/" + session.getId(), body,
                     resp -> {
-                        // Update session object and UI
                         session.setSubject(etSubject.getText().toString());
                         session.setDate(etDate.getText().toString());
                         session.setStartTime(etStartTime.getText().toString());
@@ -253,17 +248,34 @@ public class SessionFragment extends Fragment {
                 .setTitle("Delete Session")
                 .setMessage("Are you sure you want to delete this session?")
                 .setPositiveButton("Delete", (dialog, which) -> {
+                    btnDelete.setEnabled(false); // disable to prevent double taps
+
                     String token = new LoginManager(requireContext()).getToken();
                     ApiService apiService = new ApiService(requireContext(), token);
 
+                    // Call API to delete
                     apiService.delete(ApiConfig.TRAINING_SESSIONS + "/" + session.getId(),
                             response -> {
                                 Log.i(TAG, "Session deleted");
+
+                                // Notify TrainingFragment to remove from list
+                                Bundle result = new Bundle();
+                                result.putInt("deleted_session_id", session.getId());
+                                getParentFragmentManager().setFragmentResult("session_deleted", result);
+
+                                // Close this fragment
                                 if (getView() != null) {
                                     androidx.navigation.Navigation.findNavController(getView()).popBackStack();
                                 }
+
+                                Toast.makeText(requireContext(), "Session deleted successfully", Toast.LENGTH_SHORT).show();
+                                btnDelete.setEnabled(true); // re-enable after success
                             },
-                            error -> Log.e(TAG, "Delete session error", error)
+                            error -> {
+                                Log.e(TAG, "Delete session error", error);
+                                Toast.makeText(requireContext(), "Failed to delete session. Please try again.", Toast.LENGTH_SHORT).show();
+                                btnDelete.setEnabled(true); // re-enable after failure
+                            }
                     );
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())

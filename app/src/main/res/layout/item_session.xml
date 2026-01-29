@@ -1,30 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp"
-    android:background="?attr/colorSurface">
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="@color/bg_elevated_light">
 
-    <TextView
-        android:id="@+id/session_subject"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Subject"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/session_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="14sp"/>
+        <!-- Subject -->
+        <TextView
+            android:id="@+id/session_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subject"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:ellipsize="end"
+            android:singleLine="true"/>
 
-    <TextView
-        android:id="@+id/session_trainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trainer"
-        android:textSize="14sp"/>
-</LinearLayout>
+        <!-- Date -->
+        <TextView
+            android:id="@+id/session_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="13dp"
+            android:layout_marginTop="6dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"/>
+
+        <!-- Trainer -->
+        <TextView
+            android:id="@+id/session_trainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trainer"
+            android:layout_marginTop="2dp"
+            android:textSize="13dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

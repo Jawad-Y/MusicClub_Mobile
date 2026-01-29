@@ -30,11 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.music.musicclub.TrainingSessionAdapter;
-import com.music.musicclub.TrainingSession;
-import com.music.musicclub.ApiConfig;
-import com.music.musicclub.ApiService;
-
 public class TrainingFragment extends Fragment {
 
     private static final String TAG = "TrainingFragment";
@@ -66,43 +61,29 @@ public class TrainingFragment extends Fragment {
         btnAllSessions = view.findViewById(R.id.btnAllSessions);
         btnUpcomingSessions = view.findViewById(R.id.btnUpcomingSessions);
 
-        // Setup RecyclerView & Adapter
+        // RecyclerView setup
         adapter = new TrainingSessionAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
-
         adapter.setOnItemActionListener(this::navigateToDetail);
-
 
         lineAll = view.findViewById(R.id.lineAll);
         lineUpcoming = view.findViewById(R.id.lineUpcoming);
 
-
         lineAll.setVisibility(View.VISIBLE);
         lineUpcoming.setVisibility(View.INVISIBLE);
 
-
-        // Button listeners
+        // --- BUTTONS ---
         btnAddSession.setOnClickListener(v -> showAddSessionDialog());
-
-
-
-
-        lineAll.setVisibility(View.VISIBLE);
-        lineUpcoming.setVisibility(View.INVISIBLE);
 
         btnAllSessions.setOnClickListener(v -> {
             currentFilter = FilterType.ALL;
-            adapter.setItems(new ArrayList<>(allSessions));
+            adapter.setItems(allSessions);
             lineAll.setVisibility(View.VISIBLE);
             lineUpcoming.setVisibility(View.INVISIBLE);
 
-            btnAllSessions.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-            );
-            btnUpcomingSessions.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.colorAccent)
-            );
+            btnAllSessions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+            btnUpcomingSessions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent));
         });
 
         btnUpcomingSessions.setOnClickListener(v -> {
@@ -111,21 +92,29 @@ public class TrainingFragment extends Fragment {
             lineAll.setVisibility(View.INVISIBLE);
             lineUpcoming.setVisibility(View.VISIBLE);
 
-            btnUpcomingSessions.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-            );
-            btnAllSessions.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.colorAccent)
-            );
+            btnUpcomingSessions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+            btnAllSessions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent));
         });
 
-
-
+        // --- Listen for deleted sessions from SessionFragment ---
+        getParentFragmentManager().setFragmentResultListener("session_deleted", getViewLifecycleOwner(),
+                (key, bundle) -> {
+                    int deletedId = bundle.getInt("deleted_session_id", -1);
+                    if (deletedId != -1) {
+                        for (int i = 0; i < allSessions.size(); i++) {
+                            if (allSessions.get(i).getId() == deletedId) {
+                                allSessions.remove(i);
+                                adapter.setItems(allSessions);
+                                break;
+                            }
+                        }
+                    }
+                });
 
         loadSessions();
     }
 
-    // --- Filter upcoming sessions --
+    // --- Filter upcoming sessions ---
     private void filterUpcomingSessions() {
         List<TrainingSession> upcoming = new ArrayList<>();
         SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -143,9 +132,6 @@ public class TrainingFragment extends Fragment {
         adapter.setItems(upcoming);
     }
 
-
-
-
     // --- Add session dialog ---
     private void showAddSessionDialog() {
         View dialogView = LayoutInflater.from(requireContext())
@@ -158,7 +144,6 @@ public class TrainingFragment extends Fragment {
         EditText etLocation = dialogView.findViewById(R.id.etLocation);
         EditText etDescription = dialogView.findViewById(R.id.etDescription);
 
-        // Date picker
         etDate.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
             new DatePickerDialog(requireContext(),
@@ -167,7 +152,6 @@ public class TrainingFragment extends Fragment {
             ).show();
         });
 
-        // Time pickers
         etStartTime.setOnClickListener(v -> showTimePicker(etStartTime));
         etEndTime.setOnClickListener(v -> showTimePicker(etEndTime));
 
@@ -192,6 +176,9 @@ public class TrainingFragment extends Fragment {
                              EditText etEndTime, EditText etLocation, EditText etDescription) {
         try {
             JSONObject body = new JSONObject();
+            body.put("class_id", 7); // replace with dynamic value if needed
+            body.put("trainer_id", 4); // replace with logged-in trainer ID
+
             body.put("subject", etSubject.getText().toString().trim());
             body.put("date", etDate.getText().toString().trim());
             body.put("start_time", etStartTime.getText().toString().trim());
@@ -202,28 +189,43 @@ public class TrainingFragment extends Fragment {
             String token = new LoginManager(requireContext()).getToken();
             ApiService apiService = new ApiService(requireContext(), token);
 
+            showLoading(true); // Show progress while saving
+
             apiService.post(ApiConfig.TRAINING_SESSIONS, body,
                     response -> {
-                        TrainingSession newSession = new TrainingSession();
-                        newSession.setId(response.optInt("id", -1));
-                        newSession.setSubject(etSubject.getText().toString().trim());
-                        newSession.setDate(etDate.getText().toString().trim());
-                        newSession.setStartTime(etStartTime.getText().toString().trim());
-                        newSession.setEndTime(etEndTime.getText().toString().trim());
-                        newSession.setLocation(etLocation.getText().toString().trim());
-                        newSession.setDescription(etDescription.getText().toString().trim());
+                        try {
+                            // Build new session object from response
+                            TrainingSession newSession = new TrainingSession();
+                            newSession.setId(response.optInt("id", -1));
+                            newSession.setSubject(response.optString("subject", etSubject.getText().toString().trim()));
+                            newSession.setDate(response.optString("date", etDate.getText().toString().trim()));
+                            newSession.setStartTime(response.optString("start_time", etStartTime.getText().toString().trim()));
+                            newSession.setEndTime(response.optString("end_time", etEndTime.getText().toString().trim()));
+                            newSession.setLocation(response.optString("location", etLocation.getText().toString().trim()));
+                            newSession.setDescription(response.optString("description", etDescription.getText().toString().trim()));
 
-                        allSessions.add(newSession);
-                        adapter.setItems(new ArrayList<>(allSessions));
-                        adapter.highlightLastItem();
-                        recyclerView.scrollToPosition(allSessions.size() - 1);
+                            // Add to list and update adapter
+                            allSessions.add(newSession);
+                            adapter.setItems(new ArrayList<>(allSessions)); // <-- must be a new list
+                            adapter.highlightLastItem();
+                            recyclerView.scrollToPosition(allSessions.size() - 1);
 
-                        Toast.makeText(requireContext(), "Session added!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Session added!", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error adding session to list", e);
+                        } finally {
+                            showLoading(false);
+                        }
                     },
-                    error -> Log.e(TAG, "Add session error", error)
+                    error -> {
+                        Log.e(TAG, "Add session error", error);
+                        showLoading(false);
+                        Toast.makeText(requireContext(), "Failed to add session", Toast.LENGTH_SHORT).show();
+                    }
             );
         } catch (Exception e) {
             Log.e(TAG, "Save session error", e);
+            showLoading(false);
         }
     }
 
@@ -277,7 +279,7 @@ public class TrainingFragment extends Fragment {
 
                         allSessions.clear();
                         allSessions.addAll(sessions);
-                        adapter.setItems(new ArrayList<>(allSessions));
+                        adapter.setItems(allSessions);
                     } catch (Exception e) {
                         Log.e(TAG, "Parse sessions response", e);
                     } finally {
